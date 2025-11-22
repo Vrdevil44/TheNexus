@@ -83,7 +83,7 @@ export default function ContactSection() {
 
                             <div className="mt-8 pt-8 border-t border-white/10">
                                 <a
-                                    href="/Profile/Vibhu_Dikshit_CV.pdf"
+                                    href="/Vibhu_Dikshit_CV.pdf"
                                     download="Vibhu_Dikshit_CV.pdf"
                                     target="_blank"
                                     rel="noopener noreferrer"
