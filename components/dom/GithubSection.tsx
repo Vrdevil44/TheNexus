@@ -26,20 +26,22 @@ export default function GithubSection() {
         loadRepos();
     }, []);
 
-    // Auto-scroll effect
+    // Auto-scroll effect with infinite loop
     useEffect(() => {
         if (!scrollContainerRef.current || repos.length === 0 || isPaused) return;
 
         const container = scrollContainerRef.current;
         let animationFrameId: number;
-        let scrollSpeed = 0.5; // pixels per frame
+        const scrollSpeed = 0.5; // pixels per frame
 
         const autoScroll = () => {
             if (container && !isPaused) {
                 container.scrollTop += scrollSpeed;
 
-                // Reset to top when reaching bottom
-                if (container.scrollTop >= container.scrollHeight - container.clientHeight) {
+                // For infinite scroll: when we've scrolled past the first set of repos,
+                // seamlessly reset to the beginning (the duplicated content makes this invisible)
+                const halfwayPoint = container.scrollHeight / 2;
+                if (container.scrollTop >= halfwayPoint) {
                     container.scrollTop = 0;
                 }
             }
@@ -131,16 +133,17 @@ export default function GithubSection() {
                                 onMouseLeave={() => setIsPaused(false)}
                                 className="h-[450px] p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm overflow-y-auto space-y-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent"
                             >
-                                {repos.map((repo, index) => (
+                                {/* Render repos twice for infinite scroll effect */}
+                                {[...repos, ...repos].map((repo, index) => (
                                     <motion.a
-                                        key={repo.id}
+                                        key={`${repo.id}-${index}`}
                                         href={repo.html_url}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         initial={{ opacity: 0, x: -20 }}
                                         whileInView={{ opacity: 1, x: 0 }}
                                         viewport={{ once: true }}
-                                        transition={{ delay: index * 0.05 }}
+                                        transition={{ delay: (index % repos.length) * 0.05 }}
                                         className="group block p-4 rounded-lg bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-white/10 transition-all duration-300"
                                     >
                                         <div className="flex justify-between items-start mb-2">
