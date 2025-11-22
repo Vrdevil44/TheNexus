@@ -39,6 +39,9 @@ jobs:
         run: pnpm build
         env:
           NODE_ENV: production
+          # Optional: Add GITHUB_TOKEN secret in repository settings for higher API rate limits
+          # Without this, the site still works but with lower rate limits (60 req/hour vs 5000 req/hour)
+          NEXT_PUBLIC_GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Add .nojekyll file
         run: touch out/.nojekyll

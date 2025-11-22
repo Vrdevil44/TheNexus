@@ -15,13 +15,21 @@ export interface GitHubRepo {
 
 export async function fetchGitHubRepos(username: string): Promise<GitHubRepo[]> {
     try {
+        const headers: HeadersInit = {
+            'Accept': 'application/vnd.github.v3+json',
+        };
+
+        // Only add Authorization header if token is available
+        // This is optional - GitHub API works without it for public repos
+        // With token: 5000 requests/hour, without: 60 requests/hour
+        if (process.env.NEXT_PUBLIC_GITHUB_TOKEN) {
+            headers['Authorization'] = `token ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`;
+        }
+
         const response = await fetch(
             `https://api.github.com/users/${username}/repos?per_page=100&sort=updated`,
             {
-                headers: {
-                    'Accept': 'application/vnd.github.v3+json',
-                    'Authorization': `token ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`,
-                },
+                headers,
                 // Cache for 5 minutes to avoid rate limits
                 next: { revalidate: 300 }
             }
