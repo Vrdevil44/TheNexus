@@ -28,6 +28,10 @@ export const loadVantaDependencies = async (effect: VantaEffectType): Promise<vo
             if (!window.THREE) {
                 window.THREE = THREE;
             }
+            // Verify THREE is available and log version
+            if (window.THREE && window.THREE.REVISION) {
+                console.log(`[Vanta] THREE.js version: r${window.THREE.REVISION}`);
+            }
         }
 
         // Load P5.js for P5-based effects
