@@ -84,6 +84,8 @@ export interface BackdropFilter {
         color1: { h: number; s: number; l: number };
         color2: { h: number; s: number; l: number };
         angle: number; // Gradient angle in degrees (135° = lower-right glare)
+
+        radius: number; // Radius of the radial gradient in pixels (default 600)
         color1Percent: number; // Percentage of color1 in gradient (default 65)
         color2Percent: number; // Percentage of color2 in gradient (default 35)
     };
@@ -197,14 +199,15 @@ const defaultTheme: ThemeState = {
             starsGlow: 0.1,
         },
         backdropFilter: {
-            enabled: false,
-            blur: 0, // Default to no blur (user can slide up for frosted glass)
-            gradientOpacity: 0.5, // 50% opacity for gradient overlay
+            enabled: true, // Enable by default as requested
+            blur: 5, // Default to 5px as requested
+            gradientOpacity: 0.23, // Default to 23% as requested
             gradient: {
                 enabled: true, // Gradient is part of backdrop filter
                 color1: { h: 240, s: 50, l: 20 },
                 color2: { h: 280, s: 50, l: 10 },
                 angle: 135, // 135° creates a lower-right glare effect (45° from vertical)
+                radius: 600, // Default radius
                 color1Percent: 65, // 65% of color1 for glare effect
                 color2Percent: 35, // 35% of color2
             },
@@ -250,6 +253,7 @@ const presets: Record<string, ThemeState> = {
                     color1: { h: 320, s: 100, l: 50 },
                     color2: { h: 180, s: 100, l: 50 },
                     angle: 135,
+                    radius: 600,
                     color1Percent: 60,
                     color2Percent: 40,
                 }
@@ -292,6 +296,7 @@ const presets: Record<string, ThemeState> = {
                     color1: { h: 195, s: 80, l: 55 },
                     color2: { h: 230, s: 80, l: 60 },
                     angle: 180,
+                    radius: 600,
                     color1Percent: 50,
                     color2Percent: 50,
                 }
@@ -334,6 +339,7 @@ const presets: Record<string, ThemeState> = {
                     color1: { h: 210, s: 70, l: 50 },
                     color2: { h: 25, s: 70, l: 50 },
                     angle: 45,
+                    radius: 600,
                     color1Percent: 60,
                     color2Percent: 40,
                 }
@@ -376,6 +382,7 @@ const presets: Record<string, ThemeState> = {
                     color1: { h: 30, s: 100, l: 60 },
                     color2: { h: 280, s: 80, l: 50 },
                     angle: 45,
+                    radius: 600,
                     color1Percent: 50,
                     color2Percent: 50,
                 }
@@ -418,6 +425,7 @@ const presets: Record<string, ThemeState> = {
                     color1: { h: 0, s: 0, l: 0 },
                     color2: { h: 0, s: 0, l: 0 },
                     angle: 0,
+                    radius: 600,
                     color1Percent: 50,
                     color2Percent: 50,
                 }
@@ -460,6 +468,7 @@ const presets: Record<string, ThemeState> = {
                     color1: { h: 270, s: 70, l: 50 },
                     color2: { h: 240, s: 60, l: 40 },
                     angle: 135,
+                    radius: 600,
                     color1Percent: 60,
                     color2Percent: 40,
                 }
@@ -502,6 +511,7 @@ const presets: Record<string, ThemeState> = {
                     color1: { h: 140, s: 60, l: 40 },
                     color2: { h: 85, s: 50, l: 45 },
                     angle: 90,
+                    radius: 600,
                     color1Percent: 55,
                     color2Percent: 45,
                 }
@@ -544,6 +554,7 @@ const presets: Record<string, ThemeState> = {
                     color1: { h: 330, s: 100, l: 60 },
                     color2: { h: 280, s: 100, l: 65 },
                     angle: 45,
+                    radius: 600,
                     color1Percent: 65,
                     color2Percent: 35,
                 }
@@ -586,6 +597,7 @@ const presets: Record<string, ThemeState> = {
                     color1: { h: 190, s: 60, l: 70 },
                     color2: { h: 200, s: 50, l: 80 },
                     angle: 180,
+                    radius: 600,
                     color1Percent: 50,
                     color2Percent: 50,
                 }
@@ -628,6 +640,7 @@ const presets: Record<string, ThemeState> = {
                     color1: { h: 10, s: 85, l: 50 },
                     color2: { h: 35, s: 90, l: 50 },
                     angle: 120,
+                    radius: 600,
                     color1Percent: 60,
                     color2Percent: 40,
                 }
@@ -670,6 +683,7 @@ const presets: Record<string, ThemeState> = {
                     color1: { h: 35, s: 65, l: 50 },
                     color2: { h: 20, s: 55, l: 45 },
                     angle: 135,
+                    radius: 600,
                     color1Percent: 55,
                     color2Percent: 45,
                 }
@@ -861,11 +875,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
         updateBackdropFilter({
             enabled: true,
-            blur: Math.floor(randomRange(8, 20)),
-            gradientOpacity: randomRange(0.25, 0.45),
+            blur: 5, // Fixed at 5px as requested
+            gradientOpacity: 0.23, // Fixed at 23% as requested
             gradient: {
                 enabled: true,
                 angle: Math.floor(randomRange(90, 180)),
+                radius: Math.floor(randomRange(400, 900)), // Randomize radius
                 color1: { h: gradientHue1, s: Math.floor(randomRange(60, 90)), l: Math.floor(randomRange(45, 65)) },
                 color2: { h: gradientHue2, s: Math.floor(randomRange(60, 90)), l: Math.floor(randomRange(45, 65)) },
                 color1Percent: Math.floor(randomRange(30, 45)),

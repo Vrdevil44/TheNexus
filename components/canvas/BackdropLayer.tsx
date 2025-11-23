@@ -41,7 +41,7 @@ export default function BackdropLayer() {
                 WebkitBackdropFilter: `blur(${blur}px)`,
                 background: `
                     radial-gradient(
-                        600px circle at ${mousePos.x}px ${mousePos.y}px, 
+                        ${gradient.radius}px circle at ${mousePos.x}px ${mousePos.y}px, 
                         ${color2} 0%, 
                         transparent 80%
                     ),

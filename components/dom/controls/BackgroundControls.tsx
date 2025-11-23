@@ -166,6 +166,7 @@ export default function BackgroundControls() {
             gradient: {
                 enabled: true,
                 angle: Math.floor(randomRange(90, 180)), // Diagonal gradients look better
+                radius: Math.floor(randomRange(400, 900)), // Randomize radius
                 color1: { h: primaryHue, s: Math.floor(randomRange(60, 90)), l: Math.floor(randomRange(45, 65)) },
                 color2: { h: secondaryHue, s: Math.floor(randomRange(60, 90)), l: Math.floor(randomRange(45, 65)) },
                 color1Percent: Math.floor(randomRange(30, 45)),
@@ -661,18 +662,19 @@ export default function BackgroundControls() {
                             </div>
                         </div>
 
-                        {/* Gradient Angle */}
+                        {/* Gradient Radius */}
                         <div>
                             <div className="flex justify-between text-xs mb-2">
-                                <span className="text-gray-400">Gradient Angle</span>
-                                <span className="text-white font-mono">{backdropFilter.gradient.angle}°</span>
+                                <span className="text-gray-400">Gradient Radius</span>
+                                <span className="text-white font-mono">{backdropFilter.gradient.radius}px</span>
                             </div>
                             <input
                                 type="range"
-                                min="0"
-                                max="360"
-                                value={backdropFilter.gradient.angle}
-                                onChange={(e) => updateBackdropFilter({ gradient: { ...backdropFilter.gradient, angle: parseInt(e.target.value) } })}
+                                min="200"
+                                max="1200"
+                                step="50"
+                                value={backdropFilter.gradient.radius}
+                                onChange={(e) => updateBackdropFilter({ gradient: { ...backdropFilter.gradient, radius: parseInt(e.target.value) } })}
                                 className="w-full"
                             />
                         </div>
@@ -727,7 +729,7 @@ export default function BackgroundControls() {
                                     background: backdropFilter.gradient.enabled
                                         ? `
                                             radial-gradient(
-                                                circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+                                                ${backdropFilter.gradient.radius}px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
                                                 hsl(${backdropFilter.gradient.color2.h} ${backdropFilter.gradient.color2.s}% ${backdropFilter.gradient.color2.l}% / ${backdropFilter.gradientOpacity}) 0%, 
                                                 transparent 70%
                                             ),

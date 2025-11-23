@@ -34,14 +34,19 @@ export default function GithubSection() {
         let animationFrameId: number;
         const scrollSpeed = 0.5; // pixels per frame
 
+        // Initialize scroll position from current scrollTop (handles manual scroll)
+        let currentScroll = container.scrollTop;
+
         const autoScroll = () => {
             if (container && !isPaused) {
-                container.scrollTop += scrollSpeed;
+                currentScroll += scrollSpeed;
+                container.scrollTop = currentScroll;
 
                 // For infinite scroll: when we've scrolled past the first set of repos,
-                // seamlessly reset to the beginning (the duplicated content makes this invisible)
+                // seamlessly reset to the beginning
                 const halfwayPoint = container.scrollHeight / 2;
                 if (container.scrollTop >= halfwayPoint) {
+                    currentScroll = 0;
                     container.scrollTop = 0;
                 }
             }
