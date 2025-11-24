@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { VantaEffectType, THREE_BASED_EFFECTS, P5_BASED_EFFECTS } from './types';
+import { VantaEffectType, THREE_BASED_EFFECTS, P5_BASED_EFFECTS, SPECIAL_EFFECTS } from './types';
 
 const loadedScripts = new Set<string>();
 
@@ -23,8 +23,8 @@ export const loadScript = (src: string): Promise<void> => {
 
 export const loadVantaDependencies = async (effect: VantaEffectType): Promise<void> => {
     try {
-        // Load Three.js for Three.js-based effects
-        if (THREE_BASED_EFFECTS.includes(effect)) {
+        // Load Three.js for Three.js-based effects and special effects (fog)
+        if (THREE_BASED_EFFECTS.includes(effect) || SPECIAL_EFFECTS.includes(effect)) {
             if (!window.THREE) {
                 window.THREE = THREE;
             }

@@ -155,10 +155,10 @@ export const VANTA_EFFECTS: Record<VantaEffectType, { name: string; description:
         name: 'Gravity Stars',
         description: 'Interactive stars with gravity effect',
         config: {
-            starsCount: 500,
-            starsSize: 2,
-            starsOpacity: 0.8,
-            starsGlow: 0.5,
+            starsCount: 150,
+            starsSize: 1.5,
+            starsOpacity: 0.6,
+            starsGlow: 0.1,
         },
     },
 };

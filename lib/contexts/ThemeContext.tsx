@@ -2,6 +2,8 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import type { VantaEffectType } from "@/lib/vanta/types";
+import { generateRandomFonts, generateRandomColors, generateRandomEffects, generateRandomBackground } from "@/lib/utils/randomizer";
+import { useThemeHistory } from "@/lib/hooks/useThemeHistory";
 
 export interface ThemeColors {
     primary: { h: number; s: number; l: number };
@@ -57,9 +59,12 @@ export interface ThemeEffects {
     borderWidth: string;
     borderColor: { h: number; s: number; l: number };
     blur: string;
+    shadowEnabled: boolean;
     shadowIntensity: number;
     shadowColor: { h: number; s: number; l: number };
+    cardColor: { h: number; s: number; l: number };
     cardOpacity: number;
+    glowEnabled: boolean;
     glowIntensity: number;
     saturate: number;
     brightness: number;
@@ -74,6 +79,107 @@ export interface ThemeEffects {
         slow: string;
     };
 }
+
+// ... existing code ...
+
+const defaultTheme: ThemeState = {
+    fonts: {
+        heading: "Outfit",
+        body: "Work Sans",
+        mono: "JetBrains Mono",
+        sizes: {
+            h1: "5.5rem",
+            h2: "3rem",
+            h3: "2rem",
+            h4: "1.5rem",
+            body: "1rem",
+            small: "0.875rem",
+        },
+        weights: {
+            normal: 400,
+            medium: 500,
+            semibold: 600,
+            bold: 700,
+        },
+    },
+    colors: {
+        primary: { h: 0, s: 0, l: 82 },
+        secondary: { h: 0, s: 0, l: 38 },
+        accent: { h: 220, s: 80, l: 60 },
+        background: {
+            start: { h: 0, s: 0, l: 5 },
+            end: { h: 0, s: 0, l: 0 },
+        },
+        text: {
+            white: "#ffffff",
+            gray300: "#d1d5db",
+            gray400: "#9ca3af",
+            gray500: "#6b7280",
+        },
+        borders: {
+            primary: { opacity: 0.1 },
+            secondary: { opacity: 0.2 },
+            glass: { opacity: 0.05 },
+        },
+    },
+    spacing: {
+        section: "5rem",
+        sectionMd: "10rem",
+        card: "1.5rem",
+        cardMd: "2rem",
+        gap: "2rem",
+    },
+    effects: {
+        borderRadius: "0.75rem",
+        borderWidth: "1px",
+        borderColor: { h: 0, s: 0, l: 20 },
+        blur: "12px",
+        shadowEnabled: true,
+        shadowIntensity: 0,
+        shadowColor: { h: 0, s: 0, l: 0 },
+        cardColor: { h: 0, s: 0, l: 76 },
+        cardOpacity: 0.05,
+        glowEnabled: false,
+        glowIntensity: 0,
+        saturate: 0.8,
+        brightness: 0.9,
+        animationSpeed: 1,
+        sectionFade: {
+            intensity: 0.2,
+            blur: 4,
+        },
+        transitionDuration: {
+            fast: "0.15s",
+            normal: "0.3s",
+            slow: "0.6s",
+        },
+    },
+    background: {
+        vantaEffect: "gravity-stars",
+        vantaConfig: {
+            starsCount: 150,
+            starsSize: 1.5,
+            starsOpacity: 0.5,
+            starsGlow: 0.1,
+        },
+        backdropFilter: {
+            enabled: true,
+            blur: 1,
+            gradientOpacity: 0.2,
+            gradient: {
+                enabled: true,
+                color1: { h: 0, s: 0, l: 0 },
+                color2: { h: 0, s: 0, l: 39 },
+                angle: 135,
+                radius: 400,
+                color1Percent: 65,
+                color2Percent: 35,
+            },
+        },
+    },
+};
+
+
 
 export interface BackdropFilter {
     enabled: boolean;
@@ -119,101 +225,10 @@ interface ThemeContextType {
     exportTheme: () => string;
     importTheme: (json: string) => void;
     loadPreset: (preset: string) => void;
+    undo: () => void;
+    canUndo: boolean;
+    historyCount: number;
 }
-
-const defaultTheme: ThemeState = {
-    fonts: {
-        heading: "Inter",
-        body: "Inter",
-        mono: "JetBrains Mono",
-        sizes: {
-            h1: "5rem",
-            h2: "3rem",
-            h3: "2rem",
-            h4: "1.5rem",
-            body: "1rem",
-            small: "0.875rem",
-        },
-        weights: {
-            normal: 400,
-            medium: 500,
-            semibold: 600,
-            bold: 700,
-        },
-    },
-    colors: {
-        primary: { h: 180, s: 100, l: 50 },
-        secondary: { h: 300, s: 100, l: 50 },
-        accent: { h: 220, s: 80, l: 60 },
-        background: {
-            start: { h: 240, s: 10, l: 5 },
-            end: { h: 240, s: 10, l: 3 },
-        },
-        text: {
-            white: "#ffffff",
-            gray300: "#d1d5db",
-            gray400: "#9ca3af",
-            gray500: "#6b7280",
-        },
-        borders: {
-            primary: { opacity: 0.1 },
-            secondary: { opacity: 0.2 },
-            glass: { opacity: 0.05 },
-        },
-    },
-    spacing: {
-        section: "5rem",
-        sectionMd: "10rem",
-        card: "1.5rem",
-        cardMd: "2rem",
-        gap: "2rem",
-    },
-    effects: {
-        borderRadius: "0.75rem",
-        borderWidth: "1px",
-        borderColor: { h: 0, s: 0, l: 100 }, // White border
-        blur: "12px",
-        shadowIntensity: 0.5,
-        shadowColor: { h: 0, s: 0, l: 0 }, // Black shadow
-        cardOpacity: 0.1,
-        glowIntensity: 0,
-        saturate: 1,
-        brightness: 1,
-        animationSpeed: 1,
-        sectionFade: {
-            intensity: 0.2,
-            blur: 4,
-        },
-        transitionDuration: {
-            fast: "0.15s",
-            normal: "0.3s",
-            slow: "0.6s",
-        },
-    },
-    background: {
-        vantaEffect: "net" as VantaEffectType,
-        vantaConfig: {
-            starsCount: 150,
-            starsSize: 1.5,
-            starsOpacity: 0.8,
-            starsGlow: 0.1,
-        },
-        backdropFilter: {
-            enabled: true, // Enable by default as requested
-            blur: 5, // Default to 5px as requested
-            gradientOpacity: 0.23, // Default to 23% as requested
-            gradient: {
-                enabled: true, // Gradient is part of backdrop filter
-                color1: { h: 240, s: 50, l: 20 },
-                color2: { h: 280, s: 50, l: 10 },
-                angle: 135, // 135° creates a lower-right glare effect (45° from vertical)
-                radius: 600, // Default radius
-                color1Percent: 65, // 65% of color1 for glare effect
-                color2Percent: 35, // 35% of color2
-            },
-        },
-    },
-};
 
 const presets: Record<string, ThemeState> = {
     default: defaultTheme,
@@ -696,24 +711,38 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
     const [theme, setTheme] = useState<ThemeState>(defaultTheme);
+    const { saveState, undo: undoHistory, canUndo, historyCount, clearHistory } = useThemeHistory();
 
-    // Load theme from localStorage on mount
-    useEffect(() => {
-        const saved = localStorage.getItem("portfolio-theme");
-        if (saved) {
-            try {
-                setTheme(JSON.parse(saved));
-            } catch (e) {
-                console.error("Failed to load theme:", e);
-            }
-        }
-    }, []);
+    // Load theme from localStorage on mount - DISABLED for fresh load on every reload
+    // useEffect(() => {
+    //     const saved = localStorage.getItem("portfolio-theme");
+    //     if (saved) {
+    //         try {
+    //             setTheme(JSON.parse(saved));
+    //         } catch (e) {
+    //             console.error("Failed to load theme:", e);
+    //         }
+    //     }
+    // }, []);
 
-    // Save theme to localStorage whenever it changes
+    // Save theme to localStorage whenever it changes - DISABLED for fresh load on every reload
+    // useEffect(() => {
+    //     const timeoutId = setTimeout(() => {
+    //         localStorage.setItem("portfolio-theme", JSON.stringify(theme));
+    //     }, 1000); // 1s debounce for storage
+    //
+    //     return () => clearTimeout(timeoutId);
+    // }, [theme]);
+
+    // Apply theme to DOM immediately for responsiveness
     useEffect(() => {
-        localStorage.setItem("portfolio-theme", JSON.stringify(theme));
         applyThemeToDOM(theme);
-    }, [theme]);
+        // Save to history (with debounce to avoid saving every keystroke)
+        const timeoutId = setTimeout(() => {
+            saveState(theme);
+        }, 500);
+        return () => clearTimeout(timeoutId);
+    }, [theme, saveState]);
 
     const applyThemeToDOM = (theme: ThemeState) => {
         const root = document.documentElement;
@@ -735,25 +764,15 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         root.style.setProperty("--color-primary", `${ph} ${ps}% ${pl}%`);
         root.style.setProperty("--color-secondary", `${sh} ${ss}% ${sl}%`);
 
-        // Smart Theming: Derived Colors
-        // Dim: Lower saturation and lightness for subtle backgrounds/borders
-        root.style.setProperty("--color-primary-dim", `${ph} ${Math.max(0, ps - 20)}% ${Math.max(10, pl - 20)}%`);
-        root.style.setProperty("--color-secondary-dim", `${sh} ${Math.max(0, ss - 20)}% ${Math.max(10, sl - 20)}%`);
+        // Text Colors
+        root.style.setProperty("--text-white", theme.colors.text.white);
+        root.style.setProperty("--text-gray-300", theme.colors.text.gray300);
+        root.style.setProperty("--text-gray-400", theme.colors.text.gray400);
+        root.style.setProperty("--text-gray-500", theme.colors.text.gray500);
 
-        // Glow: High saturation, medium lightness for shadows/effects
-        root.style.setProperty("--color-primary-glow", `${ph} 100% 60%`);
-        root.style.setProperty("--color-secondary-glow", `${sh} 100% 60%`);
-
-        const { start, end } = theme.colors.background;
-        root.style.setProperty("--bg-start", `${start.h} ${start.s}% ${start.l}%`);
-        root.style.setProperty("--bg-end", `${end.h} ${end.s}% ${end.l}%`);
-
-        // If Gravity Stars is active, make body transparent to show the fixed canvas
-        if (theme.background.vantaEffect === 'gravity-stars') {
-            document.body.style.background = 'transparent';
-        } else {
-            document.body.style.background = `linear-gradient(to bottom, hsl(${start.h} ${start.s}% ${start.l}%), hsl(${end.h} ${end.s}% ${end.l}%))`;
-        }
+        // Background
+        root.style.setProperty("--bg-start", `${theme.colors.background.start.h} ${theme.colors.background.start.s}% ${theme.colors.background.start.l}%`);
+        root.style.setProperty("--bg-end", `${theme.colors.background.end.h} ${theme.colors.background.end.s}% ${theme.colors.background.end.l}%`);
 
         // Spacing
         root.style.setProperty("--spacing-section", theme.spacing.section);
@@ -765,8 +784,34 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         // Effects
         root.style.setProperty("--border-radius", theme.effects.borderRadius);
         root.style.setProperty("--blur", theme.effects.blur);
-        root.style.setProperty("--shadow-intensity", theme.effects.shadowIntensity.toString());
-        root.style.setProperty("--animation-speed", theme.effects.animationSpeed.toString());
+        root.style.setProperty("--shadow-intensity", (theme.effects.shadowIntensity ?? 0.5).toString());
+        root.style.setProperty("--animation-speed", (theme.effects.animationSpeed ?? 1).toString());
+
+        // Card Effects
+        const cardColor = theme.effects.cardColor || { h: 0, s: 0, l: 100 }; // Default to white if missing
+        root.style.setProperty("--card-bg-color", `${cardColor.h} ${cardColor.s}% ${cardColor.l}%`);
+        root.style.setProperty("--card-opacity", (theme.effects.cardOpacity ?? 0.05).toString());
+
+        root.style.setProperty("--card-border-width", theme.effects.borderWidth);
+        const borderColor = theme.effects.borderColor;
+        root.style.setProperty("--card-border-color", `hsl(${borderColor.h} ${borderColor.s}% ${borderColor.l}% / 0.1)`); // Default low opacity for border
+
+        // Shadows & Glow
+        const shadowColor = theme.effects.shadowColor;
+        const shadowOpacity = theme.effects.shadowEnabled ? theme.effects.shadowIntensity : 0;
+        root.style.setProperty("--card-shadow", `0 10px 30px -10px hsl(${shadowColor.h} ${shadowColor.s}% ${shadowColor.l}% / ${shadowOpacity})`);
+
+        const glowOpacity = theme.effects.glowEnabled ? theme.effects.glowIntensity : 0;
+        root.style.setProperty("--card-glow", `0 0 ${glowOpacity * 20}px hsl(${theme.colors.primary.h} ${theme.colors.primary.s}% ${theme.colors.primary.l}% / ${glowOpacity})`);
+
+        // Section Fade
+        root.style.setProperty("--section-fade-intensity", (theme.effects.sectionFade?.intensity ?? 0.2).toString());
+        root.style.setProperty("--section-fade-blur", `${theme.effects.sectionFade?.blur ?? 4}px`);
+
+        // Transitions
+        root.style.setProperty("--transition-fast", theme.effects.transitionDuration.fast);
+        root.style.setProperty("--transition-normal", theme.effects.transitionDuration.normal);
+        root.style.setProperty("--transition-slow", theme.effects.transitionDuration.slow);
     };
 
     const updateFonts = (fonts: Partial<ThemeFonts>) => {
@@ -807,7 +852,15 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     };
 
     const resetTheme = () => {
+        clearHistory();
         setTheme(defaultTheme);
+    };
+
+    const undo = () => {
+        const previousState = undoHistory();
+        if (previousState) {
+            setTheme(previousState);
+        }
     };
 
     const exportTheme = () => {
@@ -834,82 +887,24 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     };
 
     const randomizeAll = () => {
-        // List of available fonts
-        const fonts = ["Inter", "Roboto", "Poppins", "Montserrat", "Open Sans", "Lato", "Nunito", "Work Sans", "Outfit", "Space Grotesk", "Orbitron", "Exo 2", "Rajdhani", "Quicksand", "Bebas Neue", "Abril Fatface", "Playfair Display", "Merriweather", "Fira Code"];
+        const randomFonts = generateRandomFonts(theme.fonts);
+        const randomColors = generateRandomColors();
+        const randomEffects = generateRandomEffects();
+        const randomBackground = generateRandomBackground();
 
-        // Randomize Fonts
-        const randomHeading = fonts[Math.floor(Math.random() * fonts.length)];
-        const randomBody = fonts[Math.floor(Math.random() * fonts.length)];
-        updateFonts({
-            heading: randomHeading,
-            body: randomBody,
-        });
+        // Batch updates to avoid multiple re-renders
+        // Ideally we would have a single setUpdate method, but for now we update state pieces
+        // Since React batches state updates in event handlers, this should be fine
+        updateFonts(randomFonts);
+        updateColors(randomColors);
+        updateEffects(randomEffects);
 
-        // Randomize Colors (smart palette generation)
-        const primaryHue = Math.floor(Math.random() * 360);
-        const secondaryHue = (primaryHue + 120 + Math.floor(Math.random() * 60)) % 360;
-        updateColors({
-            primary: {
-                h: primaryHue,
-                s: Math.floor(Math.random() * 40) + 60,
-                l: Math.floor(Math.random() * 20) + 45
-            },
-            secondary: {
-                h: secondaryHue,
-                s: Math.floor(Math.random() * 40) + 60,
-                l: Math.floor(Math.random() * 20) + 45
-            },
-        });
-
-        // Randomize Background
-        const effects = ["fog", "waves", "clouds", "net", "cells", "trunk", "topology", "dots", "birds", "globe", "rings", "halo"] as const;
-        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        // Update background and backdrop filter
         updateBackground({
-            vantaEffect: randomEffect,
+            vantaEffect: randomBackground.vantaEffect,
+            vantaConfig: randomBackground.vantaConfig,
         });
-
-        // Randomize Backdrop Gradient for smooth appearance
-        const randomRange = (min: number, max: number) => Math.random() * (max - min) + min;
-        const gradientHue1 = Math.floor(Math.random() * 360);
-        const gradientHue2 = (gradientHue1 + 120 + Math.floor(Math.random() * 60)) % 360;
-
-        updateBackdropFilter({
-            enabled: true,
-            blur: 5, // Fixed at 5px as requested
-            gradientOpacity: 0.23, // Fixed at 23% as requested
-            gradient: {
-                enabled: true,
-                angle: Math.floor(randomRange(90, 180)),
-                radius: Math.floor(randomRange(400, 900)), // Randomize radius
-                color1: { h: gradientHue1, s: Math.floor(randomRange(60, 90)), l: Math.floor(randomRange(45, 65)) },
-                color2: { h: gradientHue2, s: Math.floor(randomRange(60, 90)), l: Math.floor(randomRange(45, 65)) },
-                color1Percent: Math.floor(randomRange(30, 45)),
-                color2Percent: Math.floor(randomRange(55, 70)),
-            }
-        });
-
-        // Randomize Effects
-        updateEffects({
-            borderRadius: `${Math.floor(Math.random() * 12) * 0.25}rem`,
-            borderWidth: `${Math.floor(Math.random() * 4) + 1}px`,
-            borderColor: {
-                h: Math.floor(Math.random() * 360),
-                s: Math.floor(Math.random() * 60) + 40,
-                l: Math.floor(Math.random() * 40) + 40
-            },
-            blur: `${Math.floor(Math.random() * 20)}px`,
-            shadowIntensity: parseFloat((Math.random() * 0.8).toFixed(2)),
-            shadowColor: {
-                h: Math.floor(Math.random() * 360),
-                s: Math.floor(Math.random() * 50) + 30,
-                l: Math.floor(Math.random() * 40) + 10
-            },
-            cardOpacity: parseFloat((Math.random() * 0.15 + 0.05).toFixed(2)),
-            glowIntensity: parseFloat((Math.random() * 0.5).toFixed(2)),
-            saturate: parseFloat((Math.random() * 1 + 0.5).toFixed(2)),
-            brightness: parseFloat((Math.random() * 0.5 + 0.75).toFixed(2)),
-            animationSpeed: parseFloat((Math.random() * 1.5 + 0.5).toFixed(1))
-        });
+        updateBackdropFilter(randomBackground.backdropFilter);
     };
 
     return (
@@ -928,6 +923,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
                 exportTheme,
                 importTheme,
                 loadPreset,
+                undo,
+                canUndo,
+                historyCount,
             }}
         >
             {children}

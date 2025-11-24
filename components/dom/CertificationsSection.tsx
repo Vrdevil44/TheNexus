@@ -52,7 +52,7 @@ export default function CertificationsSection() {
                                     transition={{ delay: index * 0.1 }}
                                     className={`p-6 rounded-xl bg-gradient-to-br ${getCategoryColor(
                                         cert.category
-                                    )} border backdrop-blur-sm`}
+                                    )} glass`}
                                 >
                                     <div className="flex items-start justify-between">
                                         <div>
@@ -88,7 +88,7 @@ export default function CertificationsSection() {
                                 whileHover={{ scale: 1.05 }}
                                 className={`p-6 rounded-xl bg-gradient-to-br ${getCategoryColor(
                                     cert.category
-                                )} border backdrop-blur-sm cursor-pointer`}
+                                )} glass cursor-pointer`}
                             >
                                 <h4 className="text-lg font-bold text-white mb-2">
                                     {cert.name}

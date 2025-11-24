@@ -77,7 +77,7 @@ export default function GithubSection() {
                             Open Source
                         </h2>
                     </div>
-                    <p className="text-gray-400 text-lg">
+                    <p className="text-theme-gray-400 text-lg">
                         Contributions and repositories on GitHub
                     </p>
                 </motion.div>
@@ -93,7 +93,7 @@ export default function GithubSection() {
                         className="flex flex-col"
                     >
                         <h3 className="text-2xl font-bold text-white mb-4">Activity</h3>
-                        <div className="h-auto lg:h-[450px] p-6 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm overflow-hidden flex items-center justify-center text-white">
+                        <div className="h-auto lg:h-[450px] p-6 glass overflow-hidden flex items-center justify-center text-white">
                             <div className="w-full overflow-x-auto flex justify-center">
                                 <GitHubCalendar
                                     username={GITHUB_USERNAME}
@@ -128,7 +128,7 @@ export default function GithubSection() {
                         </h3>
 
                         {loading ? (
-                            <div className="h-[450px] p-6 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm flex items-center justify-center">
+                            <div className="h-[450px] p-6 glass flex items-center justify-center">
                                 <p className="text-gray-400">Loading repositories...</p>
                             </div>
                         ) : (
@@ -136,7 +136,7 @@ export default function GithubSection() {
                                 ref={scrollContainerRef}
                                 onMouseEnter={() => setIsPaused(true)}
                                 onMouseLeave={() => setIsPaused(false)}
-                                className="h-[450px] p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm overflow-y-auto space-y-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent"
+                                className="h-[450px] p-4 glass overflow-y-auto space-y-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent"
                             >
                                 {/* Render repos twice for infinite scroll effect */}
                                 {[...repos, ...repos].map((repo, index) => (
@@ -159,7 +159,7 @@ export default function GithubSection() {
                                         </div>
 
                                         {repo.description && (
-                                            <p className="text-gray-400 text-sm mb-3 line-clamp-2">
+                                            <p className="text-theme-gray-400 text-sm mb-3 line-clamp-2">
                                                 {repo.description}
                                             </p>
                                         )}

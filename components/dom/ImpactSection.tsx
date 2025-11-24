@@ -79,7 +79,7 @@ export default function ImpactSection() {
                     <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tighter mb-4">
                         Impact & Recognition
                     </h2>
-                    <p className="text-gray-400 text-lg">
+                    <p className="text-theme-gray-400 text-lg">
                         Delivering measurable results across infrastructure and development
                     </p>
                 </motion.div>
@@ -93,7 +93,7 @@ export default function ImpactSection() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 }}
-                            className="p-6 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm hover:border-primary/50 transition-all duration-300 text-center"
+                            className="p-6 glass hover:border-primary/50 transition-all duration-300 text-center"
                         >
                             <div className="flex justify-center mb-4">
                                 <div className="p-3 rounded-lg bg-primary/10 border border-primary/20">
@@ -102,7 +102,7 @@ export default function ImpactSection() {
                             </div>
                             <AnimatedCounter end={metric.value} suffix={metric.suffix} />
                             <h3 className="text-white font-bold mt-2 mb-1">{metric.label}</h3>
-                            <p className="text-gray-400 text-sm">{metric.description}</p>
+                            <p className="text-theme-gray-400 text-sm">{metric.description}</p>
                         </motion.div>
                     ))}
                 </div>
@@ -128,7 +128,7 @@ export default function ImpactSection() {
                                 <div className="mt-1">
                                     <div className="w-2 h-2 rounded-full bg-primary" />
                                 </div>
-                                <p className="text-gray-300 text-sm leading-relaxed">{achievement}</p>
+                                <p className="text-theme-gray-300 text-sm leading-relaxed">{achievement}</p>
                             </motion.div>
                         ))}
                     </div>

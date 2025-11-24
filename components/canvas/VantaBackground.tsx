@@ -31,6 +31,8 @@ export default function VantaBackground({ className, style }: VantaBackgroundPro
 
         let isMounted = true;
         let effect: VantaEffect | null = null;
+        // eslint-disable-next-line prefer-const
+        let initTimeout: NodeJS.Timeout | undefined;
 
         const initVanta = async () => {
             try {
@@ -38,6 +40,19 @@ export default function VantaBackground({ className, style }: VantaBackgroundPro
                 await loadVantaDependencies(vantaEffect);
 
                 if (!isMounted || !vantaRef.current) return;
+
+                // Safety check: Ensure THREE library is fully loaded with Color class
+                if (window.THREE && !window.THREE.Color) {
+                    console.warn('[VantaBackground] THREE library loaded but Color class not available yet, retrying...');
+                    // Wait a bit longer for THREE to fully initialize
+                    await new Promise(resolve => setTimeout(resolve, 200));
+
+                    // Check again after waiting
+                    if (!window.THREE.Color) {
+                        console.error('[VantaBackground] THREE.Color still not available after waiting');
+                        return;
+                    }
+                }
 
                 // Cleanup existing effect
                 if (vantaEffectRef.current) {
@@ -70,21 +85,30 @@ export default function VantaBackground({ className, style }: VantaBackgroundPro
                     scaleMobile: 0.8, // Reduce scale on mobile for better performance
                 };
 
-                // Initialize effect
+                // Initialize effect - with additional safety check
                 if (window.VANTA && window.VANTA[vantaEffect.toUpperCase() as keyof typeof window.VANTA]) {
+                    // Final check before initialization
+                    if (window.THREE && !window.THREE.Color) {
+                        console.error('[VantaBackground] THREE.Color not available at initialization time');
+                        return;
+                    }
+
                     effect = (window.VANTA[vantaEffect.toUpperCase() as keyof typeof window.VANTA] as any)(mergedConfig);
                     vantaEffectRef.current = effect;
+                    console.log(`[VantaBackground] Successfully initialized ${vantaEffect} effect`);
                 }
             } catch (error) {
                 console.error(`Error initializing Vanta ${vantaEffect}:`, error);
             }
         };
 
-        initVanta();
+        // Debounce initialization to prevent thrashing
+        initTimeout = setTimeout(initVanta, 100);
 
         // Cleanup on unmount or effect change
         return () => {
             isMounted = false;
+            clearTimeout(initTimeout);
             if (vantaEffectRef.current) {
                 vantaEffectRef.current.destroy();
                 vantaEffectRef.current = null;
@@ -92,16 +116,23 @@ export default function VantaBackground({ className, style }: VantaBackgroundPro
         };
     }, [vantaEffect, vantaConfig]);
 
-    // Update effect when config changes
+    // Update effect when config changes - also debounced slightly if needed, but usually fast
+    // We actually merged this into the main effect dependency array above to simplify lifecycle
+    // But if we want to keep them separate to avoid full re-init on minor config changes:
+    /* 
     useEffect(() => {
         if (vantaEffectRef.current && Object.keys(vantaConfig).length > 0) {
-            try {
-                vantaEffectRef.current.setOptions(vantaConfig);
-            } catch (error) {
-                console.error("Error updating Vanta config:", error);
-            }
+             // ... update logic
         }
-    }, [vantaConfig]);
+    }, [vantaConfig]); 
+    */
+    // The previous implementation had two effects. The first one depended on [vantaEffect, vantaConfig].
+    // The second one depended on [vantaConfig]. This causes a double-render or race condition.
+    // I have removed the second effect and let the first one handle everything, 
+    // because Vanta effects often need a full re-init if core config changes, 
+    // or at least it's safer to re-init to avoid state drift.
+    // If we want to support `setOptions` without destroy, we need to be careful.
+    // For now, full re-init with debounce is safer for memory.
 
     // Handle window resize
     useEffect(() => {

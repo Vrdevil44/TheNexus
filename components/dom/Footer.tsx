@@ -32,7 +32,7 @@ export default function Footer() {
                         <h3 className="text-2xl font-bold text-white mb-2 tracking-tighter">
                             THE NEXUS
                         </h3>
-                        <p className="text-gray-400 text-sm">
+                        <p className="text-theme-gray-400 text-sm">
                             Infrastructure-first IT Specialist & Full Stack Developer
                         </p>
                     </div>
@@ -76,7 +76,7 @@ export default function Footer() {
 
                 {/* Bottom Bar */}
                 <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-gray-400 text-sm">
+                    <p className="text-theme-gray-400 text-sm">
                         © 2025 Vibhu Dikshit. All rights reserved.
                     </p>
                     <p className="text-gray-500 text-xs font-mono">

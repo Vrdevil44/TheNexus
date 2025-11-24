@@ -95,7 +95,8 @@ export default function HeroOverlay() {
                 >
                     <AnimatedTitle
                         text="Vibhu Dikshit"
-                        className="text-5xl md:text-7xl lg:text-8xl font-bold text-white tracking-tight justify-center"
+                        className="font-bold text-white tracking-tight justify-center"
+                        style={{ fontSize: "var(--text-h1)" }}
                     />
                 </motion.div>
 
@@ -107,14 +108,18 @@ export default function HeroOverlay() {
                     className="mb-6"
                 >
                     <h2
-                        className="text-2xl md:text-3xl lg:text-4xl font-bold bg-clip-text text-transparent mb-2"
+                        className="font-bold bg-clip-text text-transparent mb-2"
                         style={{
+                            fontSize: "var(--text-h2)",
                             backgroundImage: `linear-gradient(to right, hsl(${theme.colors.primary.h}, ${theme.colors.primary.s}%, ${theme.colors.primary.l}%), hsl(${theme.colors.secondary.h}, ${theme.colors.secondary.s}%, ${theme.colors.secondary.l}%), hsl(${theme.colors.primary.h}, ${theme.colors.primary.s}%, ${theme.colors.primary.l}%))`
                         }}
                     >
                         Architecting Digital Infrastructure
                     </h2>
-                    <h3 className="text-xl md:text-2xl text-gray-300 font-light">
+                    <h3
+                        className="text-theme-gray-300 font-light"
+                        style={{ fontSize: "var(--text-h3)" }}
+                    >
                         Building Scalable Solutions
                     </h3>
                 </motion.div>
@@ -124,7 +129,8 @@ export default function HeroOverlay() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.8, delay: 0.8 }}
-                    className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto mb-12 leading-relaxed"
+                    className="text-theme-gray-400 max-w-2xl mx-auto mb-12 leading-relaxed"
+                    style={{ fontSize: "var(--text-body)" }}
                 >
                     Bridging the gap between enterprise systems and innovative applications.
                     Specialized in cloud infrastructure, full-stack development, and system optimization.
@@ -143,10 +149,10 @@ export default function HeroOverlay() {
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.5, delay: 1.2 + index * 0.2 }}
-                            className="p-4 rounded-lg bg-white/5 border border-white/10 backdrop-blur-sm"
+                            className="p-4 glass"
                         >
                             <AnimatedCounter end={stat.value} suffix={stat.suffix} />
-                            <p className="text-gray-400 text-sm mt-2">{stat.label}</p>
+                            <p className="text-theme-gray-400 text-sm mt-2">{stat.label}</p>
                         </motion.div>
                     ))}
                 </motion.div>
@@ -186,7 +192,7 @@ export default function HeroOverlay() {
                     className="flex flex-col items-center gap-2 cursor-pointer"
                     onClick={() => document.getElementById("experience")?.scrollIntoView({ behavior: "smooth" })}
                 >
-                    <span className="text-gray-400 text-sm">Scroll to explore</span>
+                    <span className="text-theme-gray-400 text-sm">Scroll to explore</span>
                     <ChevronDown className="w-6 h-6 text-primary" />
                 </motion.div>
             </motion.div>

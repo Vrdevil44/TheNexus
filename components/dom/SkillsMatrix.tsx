@@ -67,7 +67,7 @@ export default function SkillsMatrix() {
                             animate={{ opacity: 1, rotateX: 0 }}
                             exit={{ opacity: 0, rotateX: 90 }}
                             transition={{ duration: 0.4 }}
-                            className={`flex flex-col items-center justify-center p-6 rounded-xl border bg-white/5 backdrop-blur-sm hover:scale-105 transition-transform duration-300 ${mode === "infrastructure"
+                            className={`flex flex-col items-center justify-center p-6 glass hover:scale-105 transition-transform duration-300 ${mode === "infrastructure"
                                 ? "border-secondary/30 hover:border-secondary"
                                 : "border-primary/30 hover:border-primary"
                                 }`}

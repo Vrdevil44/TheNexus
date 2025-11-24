@@ -12,7 +12,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
             whileHover={{ y: -8, transition: { duration: 0.2 } }}
-            className="relative h-full rounded-xl bg-white/5 border border-white/10 backdrop-blur-md overflow-hidden group hover:border-primary/50 transition-all duration-300"
+            className="relative h-full glass overflow-hidden group hover:border-primary/50 transition-all duration-300"
         >
             <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/50 z-0" />
 
@@ -29,16 +29,16 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                 <div className="mb-4">
                     <div className="flex items-center gap-2 mb-2">
                         <Target className="w-4 h-4 text-primary" />
-                        <h4 className="text-sm font-bold text-gray-300">Challenge</h4>
+                        <h4 className="text-sm font-bold text-theme-gray-300">Challenge</h4>
                     </div>
-                    <p className="text-gray-400 text-sm leading-relaxed">{project.challenge}</p>
+                    <p className="text-theme-gray-400 text-sm leading-relaxed">{project.challenge}</p>
                 </div>
 
                 {/* Solution */}
                 <div className="mb-4">
                     <div className="flex items-center gap-2 mb-2">
                         <Zap className="w-4 h-4 text-secondary" />
-                        <h4 className="text-sm font-bold text-gray-300">Solution</h4>
+                        <h4 className="text-sm font-bold text-theme-gray-300">Solution</h4>
                     </div>
                     <p className="text-gray-400 text-sm leading-relaxed">{project.solution}</p>
                 </div>
@@ -47,7 +47,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                 <div className="mb-4">
                     <div className="flex items-center gap-2 mb-2">
                         <TrendingUp className="w-4 h-4 text-green-400" />
-                        <h4 className="text-sm font-bold text-gray-300">Impact</h4>
+                        <h4 className="text-sm font-bold text-theme-gray-300">Impact</h4>
                     </div>
                     <p className="text-gray-400 text-sm leading-relaxed mb-3">{project.impact}</p>
 
@@ -113,7 +113,7 @@ export default function ProjectsShowcase() {
                     <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tighter mb-4">
                         THE LAB
                     </h2>
-                    <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+                    <p className="text-theme-gray-400 text-lg max-w-2xl mx-auto">
                         Featured projects demonstrating technical expertise, problem-solving ability, and measurable business impact
                     </p>
                 </motion.div>

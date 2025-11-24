@@ -64,18 +64,18 @@ export default function ExperienceSection() {
                                 viewport={{ once: true, margin: "-100px" }}
                                 transition={{ duration: 0.6, delay: 0.2 }}
                                 className={`w-full md:w-[calc(50%-2rem)] ml-12 md:ml-0 ${index % 2 === 0 ? "md:mr-8" : "md:ml-8"
-                                    } p-6 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md shadow-xl hover:border-primary/50 transition-colors duration-300`}
+                                    } p-6 glass shadow-xl hover:border-primary/50 transition-colors duration-300`}
                             >
                                 <div className="cursor-pointer" onClick={() => toggleExpand(index)}>
                                     <div className="flex justify-between items-start">
                                         <h3 className="text-xl font-bold text-primary mb-1">
                                             {exp.title}
                                         </h3>
-                                        <div className="md:hidden text-gray-400">
+                                        <div className="md:hidden text-theme-gray-400">
                                             {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                                         </div>
                                     </div>
-                                    <div className="flex flex-col sm:flex-row sm:justify-between text-sm text-gray-400 mb-2 font-mono">
+                                    <div className="flex flex-col sm:flex-row sm:justify-between text-sm text-theme-gray-400 mb-2 font-mono">
                                         <span className="font-semibold">{exp.company}</span>
                                         <span>{exp.period}</span>
                                     </div>
@@ -83,7 +83,7 @@ export default function ExperienceSection() {
 
                                     {/* Description (Always visible first line, expand for more) */}
                                     <div className="mb-4">
-                                        <p className="text-gray-300 text-sm mb-2 leading-relaxed">
+                                        <p className="text-theme-gray-300 text-sm mb-2 leading-relaxed">
                                             {exp.description[0]}
                                         </p>
                                         <AnimatePresence>
@@ -96,7 +96,7 @@ export default function ExperienceSection() {
                                                     className="overflow-hidden"
                                                 >
                                                     {exp.description.slice(1).map((item, i) => (
-                                                        <p key={i} className="text-gray-300 text-sm mb-2 leading-relaxed">
+                                                        <p key={i} className="text-theme-gray-300 text-sm mb-2 leading-relaxed">
                                                             {item}
                                                         </p>
                                                     ))}
@@ -129,7 +129,7 @@ export default function ExperienceSection() {
                                             >
                                                 <ul className="space-y-2 pb-2">
                                                     {exp.achievements.map((achievement, i) => (
-                                                        <li key={i} className="flex items-start gap-2 text-gray-300 text-sm">
+                                                        <li key={i} className="flex items-start gap-2 text-theme-gray-300 text-sm">
                                                             <span className="text-primary mt-1.5">▸</span>
                                                             <span className="leading-relaxed">{achievement}</span>
                                                         </li>

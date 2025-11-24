@@ -8,6 +8,7 @@ import { ChevronDown, ChevronUp, RotateCcw, Eye, Shuffle } from "lucide-react";
 import { hslToHex } from "@/lib/utils/contrast";
 import VantaBackground from "@/components/canvas/VantaBackground";
 import GravityStarsBackground from "@/components/ui/GravityStarsBackground";
+import { generateRandomBackground } from "@/lib/utils/randomizer";
 
 export default function BackgroundControls() {
     const { theme, updateBackground, updateBackdropFilter, updateVantaConfig } = useTheme();
@@ -43,143 +44,13 @@ export default function BackgroundControls() {
 
 
     // Generate Random Background
-    const generateRandomBackground = () => {
-        // 1. Randomize Vanta Effect
-        const effectKeys = Object.keys(VANTA_EFFECTS) as VantaEffectType[];
-        const randomEffect = effectKeys[Math.floor(Math.random() * effectKeys.length)];
-
-        // 2. Generate Sensible Config for the Effect
-        const newConfig: any = {};
-
-        // Helper for random color
-        const randomColor = () => Math.floor(Math.random() * 0xFFFFFF);
-        // Helper for random range
-        const randomRange = (min: number, max: number) => Math.random() * (max - min) + min;
-
-        // Independent random colors for background effects
-        // We generate a palette for the background specifically, separate from the theme
-        const bgHue = Math.floor(Math.random() * 360);
-        const bgSat = Math.floor(randomRange(20, 80));
-        const bgLight = Math.floor(randomRange(5, 20)); // Keep backgrounds generally dark
-
-        const primaryHue = (bgHue + 180) % 360; // Complementary
-        const secondaryHue = (bgHue + 60) % 360; // Analogous/Triadic
-
-        const bgHex = parseInt(hslToHex(bgHue, bgSat, bgLight).slice(1), 16);
-        const primaryHex = parseInt(hslToHex(primaryHue, 70, 60).slice(1), 16);
-        const secondaryHex = parseInt(hslToHex(secondaryHue, 70, 60).slice(1), 16);
-
-        switch (randomEffect) {
-            case 'fog':
-                newConfig.highlightColor = secondaryHex;
-                newConfig.midtoneColor = primaryHex;
-                newConfig.lowlightColor = bgHex;
-                newConfig.baseColor = bgHex;
-                newConfig.blurFactor = randomRange(0.4, 0.9);
-                newConfig.zoom = randomRange(0.8, 1.5);
-                newConfig.speed = randomRange(1, 3);
-                break;
-            case 'net':
-                newConfig.color = primaryHex;
-                newConfig.backgroundColor = bgHex;
-                newConfig.points = Math.floor(randomRange(8, 15));
-                newConfig.maxDistance = randomRange(18, 26);
-                newConfig.spacing = randomRange(14, 22);
-                newConfig.showDots = Math.random() > 0.3;
-                break;
-            case 'birds':
-                newConfig.backgroundColor = bgHex;
-                newConfig.color1 = primaryHex;
-                newConfig.color2 = secondaryHex;
-                newConfig.mode = ['complexity', 'simple', 'beacon'][Math.floor(Math.random() * 3)];
-                newConfig.quantity = Math.floor(randomRange(2, 5));
-                newConfig.birdSize = randomRange(0.8, 1.5);
-                newConfig.speedLimit = randomRange(3, 6);
-                break;
-            case 'cells':
-                newConfig.color1 = primaryHex;
-                newConfig.color2 = secondaryHex;
-                newConfig.size = randomRange(1.0, 2.5);
-                newConfig.speed = randomRange(1, 3);
-                break;
-            case 'clouds':
-            case 'clouds2':
-                newConfig.backgroundColor = bgHex;
-                newConfig.skyColor = bgHex;
-                newConfig.cloudColor = primaryHex; // Tint clouds with primary
-                newConfig.speed = randomRange(0.5, 1.5);
-                break;
-            case 'dots':
-                newConfig.backgroundColor = bgHex;
-                newConfig.color = primaryHex;
-                newConfig.color2 = secondaryHex;
-                newConfig.size = randomRange(2, 4);
-                newConfig.spacing = randomRange(25, 45);
-                newConfig.showLines = Math.random() > 0.4;
-                break;
-            case 'globe':
-                newConfig.backgroundColor = bgHex;
-                newConfig.color = primaryHex;
-                newConfig.color2 = secondaryHex;
-                newConfig.size = randomRange(0.8, 1.4);
-                break;
-            case 'halo':
-                newConfig.backgroundColor = bgHex;
-                newConfig.baseColor = primaryHex;
-                newConfig.size = randomRange(1, 2);
-                newConfig.amplitudeFactor = randomRange(1, 2);
-                break;
-            case 'rings':
-                newConfig.backgroundColor = bgHex;
-                newConfig.color = primaryHex;
-                break;
-            case 'topology':
-                newConfig.backgroundColor = bgHex;
-                newConfig.color = primaryHex;
-                break;
-            case 'trunk':
-                newConfig.backgroundColor = bgHex;
-                newConfig.color = primaryHex;
-                newConfig.spacing = randomRange(1, 6);
-                newConfig.chaos = randomRange(1, 4);
-                break;
-            case 'waves':
-                newConfig.color = primaryHex;
-                newConfig.shininess = randomRange(20, 60);
-                newConfig.waveHeight = randomRange(10, 25);
-                newConfig.waveSpeed = randomRange(0.5, 1.5);
-                newConfig.zoom = randomRange(0.8, 1.3);
-                break;
-            case 'gravity-stars':
-                newConfig.starsCount = Math.floor(randomRange(200, 600));
-                newConfig.starsSize = randomRange(1.5, 3);
-                newConfig.starsOpacity = randomRange(0.6, 1);
-                newConfig.starsGlow = randomRange(0.3, 0.8);
-                break;
-        }
-
-        // 3. Randomize Backdrop Filter
-        const randomBackdrop = {
-            enabled: true, // Always enable for smooth gradients
-            blur: Math.floor(randomRange(8, 20)),
-            gradientOpacity: randomRange(0.25, 0.45),
-            gradient: {
-                enabled: true,
-                angle: Math.floor(randomRange(90, 180)), // Diagonal gradients look better
-                radius: Math.floor(randomRange(400, 900)), // Randomize radius
-                color1: { h: primaryHue, s: Math.floor(randomRange(60, 90)), l: Math.floor(randomRange(45, 65)) },
-                color2: { h: secondaryHue, s: Math.floor(randomRange(60, 90)), l: Math.floor(randomRange(45, 65)) },
-                color1Percent: Math.floor(randomRange(30, 45)),
-                color2Percent: Math.floor(randomRange(55, 70)),
-            }
-        };
-
-        // Apply all updates
+    const generateRandomBackgroundHandler = () => {
+        const randomBackground = generateRandomBackground();
         updateBackground({
-            vantaEffect: randomEffect,
-            vantaConfig: newConfig
+            vantaEffect: randomBackground.vantaEffect,
+            vantaConfig: randomBackground.vantaConfig
         });
-        updateBackdropFilter(randomBackdrop);
+        updateBackdropFilter(randomBackground.backdropFilter);
     };
 
     // Compact color picker (just the box)
@@ -464,7 +335,7 @@ export default function BackgroundControls() {
             <div className="flex items-center justify-between">
                 <h3 className="text-lg font-bold text-white mb-2">Background</h3>
                 <button
-                    onClick={generateRandomBackground}
+                    onClick={generateRandomBackgroundHandler}
                     className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-primary to-secondary rounded-lg text-white text-xs font-medium hover:opacity-90 transition-opacity shadow-lg shadow-primary/20 group"
                 >
                     <Shuffle className="w-3 h-3 group-hover:rotate-180 transition-transform duration-500" />
@@ -488,7 +359,11 @@ export default function BackgroundControls() {
                         <select
                             value={vantaEffect}
                             onChange={(e) => {
-                                updateBackground({ vantaEffect: e.target.value as VantaEffectType, vantaConfig: {} });
+                                const newEffect = e.target.value as VantaEffectType;
+                                updateBackground({
+                                    vantaEffect: newEffect,
+                                    vantaConfig: VANTA_EFFECTS[newEffect].config
+                                });
                             }}
                             className="w-full px-3 py-2 mb-4 bg-gray-800 border border-white/20 rounded text-white text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all cursor-pointer [&>option]:bg-gray-800 [&>option]:text-white [&>option:checked]:bg-primary [&>option:hover]:bg-primary/20"
                         >

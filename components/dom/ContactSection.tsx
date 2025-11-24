@@ -119,7 +119,7 @@ export default function ContactSection() {
                         viewport={{ once: true }}
                         className="space-y-6"
                     >
-                        <div className="p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md shadow-2xl h-full flex flex-col justify-center">
+                        <div className="p-8 glass shadow-2xl h-full flex flex-col justify-center">
                             <h3 className="text-2xl font-bold text-white mb-6">Contact Info</h3>
                             <div className="space-y-6">
                                 {contactItems.map((item, index) => (
@@ -169,7 +169,7 @@ export default function ContactSection() {
                     >
                         <form
                             onSubmit={handleSubmit}
-                            className="p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md shadow-2xl space-y-4"
+                            className="p-8 glass shadow-2xl space-y-4"
                         >
                             <h3 className="text-2xl font-bold text-white mb-2">Send a Message</h3>
                             <p className="text-gray-400 text-sm mb-6">

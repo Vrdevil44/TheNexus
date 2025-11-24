@@ -54,13 +54,13 @@ export default function ColorControls() {
     const generateRandomTheme = () => {
         // Curated palettes for better results
         const palettes = [
-            { name: "Cyberpunk", primary: { h: 320, s: 100, l: 50 }, secondary: { h: 180, s: 100, l: 50 }, bg: { h: 280, s: 30, l: 10 } },
-            { name: "Sunset", primary: { h: 30, s: 100, l: 60 }, secondary: { h: 280, s: 60, l: 50 }, bg: { h: 20, s: 40, l: 15 } },
-            { name: "Forest", primary: { h: 140, s: 60, l: 45 }, secondary: { h: 80, s: 70, l: 40 }, bg: { h: 150, s: 30, l: 10 } },
-            { name: "Ocean", primary: { h: 200, s: 80, l: 50 }, secondary: { h: 170, s: 70, l: 45 }, bg: { h: 210, s: 40, l: 10 } },
-            { name: "Lavender", primary: { h: 260, s: 70, l: 65 }, secondary: { h: 290, s: 60, l: 60 }, bg: { h: 270, s: 20, l: 15 } },
-            { name: "Slate", primary: { h: 210, s: 20, l: 70 }, secondary: { h: 210, s: 10, l: 50 }, bg: { h: 210, s: 15, l: 10 } },
-            { name: "Gold", primary: { h: 45, s: 90, l: 50 }, secondary: { h: 15, s: 80, l: 40 }, bg: { h: 30, s: 20, l: 5 } },
+            { name: "Cyberpunk", primary: { h: 320, s: 100, l: 50 }, secondary: { h: 180, s: 100, l: 50 } },
+            { name: "Sunset", primary: { h: 30, s: 100, l: 60 }, secondary: { h: 280, s: 60, l: 50 } },
+            { name: "Forest", primary: { h: 140, s: 60, l: 45 }, secondary: { h: 80, s: 70, l: 40 } },
+            { name: "Ocean", primary: { h: 200, s: 80, l: 50 }, secondary: { h: 170, s: 70, l: 45 } },
+            { name: "Lavender", primary: { h: 260, s: 70, l: 65 }, secondary: { h: 290, s: 60, l: 60 } },
+            { name: "Slate", primary: { h: 210, s: 20, l: 70 }, secondary: { h: 210, s: 10, l: 50 } },
+            { name: "Gold", primary: { h: 45, s: 90, l: 50 }, secondary: { h: 15, s: 80, l: 40 } },
         ];
 
         // 30% chance to pick a curated palette
@@ -68,11 +68,7 @@ export default function ColorControls() {
             const palette = palettes[Math.floor(Math.random() * palettes.length)];
             updateColors({
                 primary: palette.primary,
-                secondary: palette.secondary,
-                background: {
-                    start: palette.bg,
-                    end: { ...palette.bg, l: Math.max(0, palette.bg.l - 5) }
-                }
+                secondary: palette.secondary
             });
             return;
         }
@@ -99,38 +95,18 @@ export default function ColorControls() {
             l: 50 + Math.random() * 15   // 50-65%
         };
 
-        // Dark backgrounds with slight variation
-        const bgStartHue = baseHue + (Math.random() * 40 - 20);
-        const background = {
-            start: {
-                h: bgStartHue,
-                s: 10 + Math.random() * 20,  // 10-30%
-                l: 5 + Math.random() * 10     // 5-15%
-            },
-            end: {
-                h: (bgStartHue + 20) % 360,
-                s: 10 + Math.random() * 20,
-                l: 3 + Math.random() * 7      // 3-10%
-            }
-        };
-
         updateColors({
             primary,
-            secondary,
-            background,
+            secondary
         });
     };
 
     // Check contrast for text readability
     const checkContrast = () => {
-        const primaryOnBg = getContrastRatio(theme.colors.primary, theme.colors.background.start);
-        const secondaryOnBg = getContrastRatio(theme.colors.secondary, theme.colors.background.start);
         const whiteOnPrimary = getContrastRatio({ h: 0, s: 0, l: 100 }, theme.colors.primary);
         const whiteOnSecondary = getContrastRatio({ h: 0, s: 0, l: 100 }, theme.colors.secondary);
 
         return {
-            primaryOnBg: { ratio: primaryOnBg, accessible: meetsWCAG(primaryOnBg, 'AA', false) },
-            secondaryOnBg: { ratio: secondaryOnBg, accessible: meetsWCAG(secondaryOnBg, 'AA', false) },
             whiteOnPrimary: { ratio: whiteOnPrimary, accessible: meetsWCAG(whiteOnPrimary, 'AA', false) },
             whiteOnSecondary: { ratio: whiteOnSecondary, accessible: meetsWCAG(whiteOnSecondary, 'AA', false) },
         };
@@ -201,61 +177,6 @@ export default function ColorControls() {
                 </div>
             </div>
 
-            {/* Background Gradient */}
-            <div>
-                <label className="block text-xs font-medium text-gray-300 mb-3">
-                    Background Gradient
-                </label>
-                <div className="grid grid-cols-2 gap-4">
-                    <div>
-                        <span className="text-[10px] text-gray-500 block mb-1 uppercase tracking-wider">Start Color</span>
-                        <div className="flex gap-2">
-                            <input
-                                type="color"
-                                value={hslToRgb(
-                                    theme.colors.background.start.h,
-                                    theme.colors.background.start.s,
-                                    theme.colors.background.start.l
-                                )}
-                                onChange={(e) => {
-                                    const hsl = rgbToHsl(e.target.value);
-                                    updateColors({
-                                        background: { ...theme.colors.background, start: hsl }
-                                    });
-                                }}
-                                className="w-10 h-10 rounded-lg border border-white/20 cursor-pointer p-0 bg-transparent"
-                            />
-                            <div className="flex-1 flex flex-col justify-center text-[10px] text-gray-400 font-mono">
-                                <span>{hslToRgb(theme.colors.background.start.h, theme.colors.background.start.s, theme.colors.background.start.l)}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <span className="text-[10px] text-gray-500 block mb-1 uppercase tracking-wider">End Color</span>
-                        <div className="flex gap-2">
-                            <input
-                                type="color"
-                                value={hslToRgb(
-                                    theme.colors.background.end.h,
-                                    theme.colors.background.end.s,
-                                    theme.colors.background.end.l
-                                )}
-                                onChange={(e) => {
-                                    const hsl = rgbToHsl(e.target.value);
-                                    updateColors({
-                                        background: { ...theme.colors.background, end: hsl }
-                                    });
-                                }}
-                                className="w-10 h-10 rounded-lg border border-white/20 cursor-pointer p-0 bg-transparent"
-                            />
-                            <div className="flex-1 flex flex-col justify-center text-[10px] text-gray-400 font-mono">
-                                <span>{hslToRgb(theme.colors.background.end.h, theme.colors.background.end.s, theme.colors.background.end.l)}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             {/* Color Preview */}
             <div className="mt-6 p-4 rounded-lg border border-white/10 bg-white/5">
                 <p className="text-xs text-gray-400 mb-3">Preview</p>
@@ -271,14 +192,6 @@ export default function ColorControls() {
                         style={{ backgroundColor: `hsl(${theme.colors.secondary.h}, ${theme.colors.secondary.s}%, ${theme.colors.secondary.l}%)` }}
                     >
                         Secondary
-                    </div>
-                    <div
-                        className="h-8 rounded flex items-center justify-center text-white text-xs font-medium"
-                        style={{
-                            background: `linear-gradient(to right, hsl(${theme.colors.background.start.h}, ${theme.colors.background.start.s}%, ${theme.colors.background.start.l}%), hsl(${theme.colors.background.end.h}, ${theme.colors.background.end.s}%, ${theme.colors.background.end.l}%))`
-                        }}
-                    >
-                        Background
                     </div>
                 </div>
             </div>
@@ -309,31 +222,8 @@ export default function ColorControls() {
                             )}
                         </div>
                     </div>
-                    <div className="flex items-center justify-between">
-                        <span className="text-gray-300">Primary on Background</span>
-                        <div className="flex items-center gap-2">
-                            <span className="font-mono text-gray-400">{contrastResults.primaryOnBg.ratio.toFixed(2)}:1</span>
-                            {contrastResults.primaryOnBg.accessible ? (
-                                <CheckCircle className="w-4 h-4 text-green-500" />
-                            ) : (
-                                <AlertTriangle className="w-4 h-4 text-yellow-500" />
-                            )}
-                        </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                        <span className="text-gray-300">Secondary on Background</span>
-                        <div className="flex items-center gap-2">
-                            <span className="font-mono text-gray-400">{contrastResults.secondaryOnBg.ratio.toFixed(2)}:1</span>
-                            {contrastResults.secondaryOnBg.accessible ? (
-                                <CheckCircle className="w-4 h-4 text-green-500" />
-                            ) : (
-                                <AlertTriangle className="w-4 h-4 text-yellow-500" />
-                            )}
-                        </div>
-                    </div>
                     <p className="text-gray-500 mt-3 text-[10px]">
-                        {!contrastResults.whiteOnPrimary.accessible || !contrastResults.whiteOnSecondary.accessible ||
-                            !contrastResults.primaryOnBg.accessible || !contrastResults.secondaryOnBg.accessible ? (
+                        {!contrastResults.whiteOnPrimary.accessible || !contrastResults.whiteOnSecondary.accessible ? (
                             <><AlertTriangle className="w-3 h-3 inline mr-1" />Some combinations may be hard to read. Aim for 4.5:1 ratio.</>
                         ) : (
                             <><CheckCircle className="w-3 h-3 inline mr-1" />All combinations meet WCAG AA standards!</>

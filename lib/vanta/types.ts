@@ -175,3 +175,6 @@ export const THREE_BASED_EFFECTS: VantaEffectType[] = [
 export const P5_BASED_EFFECTS: VantaEffectType[] = ['trunk', 'topology'];
 
 export const SPECIAL_EFFECTS: VantaEffectType[] = ['fog'];
+
+// Custom Canvas-based effects (not Vanta)
+export const CUSTOM_EFFECTS: VantaEffectType[] = ['gravity-stars'];

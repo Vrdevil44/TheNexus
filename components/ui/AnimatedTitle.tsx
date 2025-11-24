@@ -8,9 +8,10 @@ import { useTheme } from "@/lib/contexts/ThemeContext";
 interface AnimatedTitleProps {
     text: string;
     className?: string;
+    style?: React.CSSProperties;
 }
 
-export default function AnimatedTitle({ text, className }: AnimatedTitleProps) {
+export default function AnimatedTitle({ text, className, style }: AnimatedTitleProps) {
     const { theme } = useTheme();
     const controls = useAnimationControls();
     const [isHovered, setIsHovered] = useState(false);
@@ -42,7 +43,7 @@ export default function AnimatedTitle({ text, className }: AnimatedTitleProps) {
             className={cn("flex overflow-hidden cursor-default", className)}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            style={{ fontFamily: theme.fonts.heading }}
+            style={{ fontFamily: theme.fonts.heading, ...style }}
         >
             {characters.map((char, index) => (
                 <AnimatedChar

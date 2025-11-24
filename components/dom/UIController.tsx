@@ -2,25 +2,31 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Settings, Palette, Type, Layout, Sparkles, Save, Upload, RotateCcw, Image, Shuffle } from "lucide-react";
+import { X, Settings, Palette, Type, Sparkles, Save, Upload, RotateCcw, Image, Shuffle } from "lucide-react";
 import { useTheme } from "@/lib/contexts/ThemeContext";
-import FontControls from "./controls/FontControls";
-import ColorControls from "./controls/ColorControls";
-import EffectsControls from "./controls/EffectsControls";
-import PresetSelector from "./controls/PresetSelector";
-import BackgroundControls from "./controls/BackgroundControls";
+import dynamic from "next/dynamic";
 
-export default function UIController() {
-    const [isOpen, setIsOpen] = useState(false);
+const FontControls = dynamic(() => import("./controls/FontControls"), { loading: () => <div className="p-4 text-sm text-gray-400">Loading fonts...</div> });
+const ColorControls = dynamic(() => import("./controls/ColorControls"), { loading: () => <div className="p-4 text-sm text-gray-400">Loading colors...</div> });
+const EffectsControls = dynamic(() => import("./controls/EffectsControls"), { loading: () => <div className="p-4 text-sm text-gray-400">Loading effects...</div> });
+const PresetSelector = dynamic(() => import("./controls/PresetSelector"), { loading: () => <div className="p-4 text-sm text-gray-400">Loading presets...</div> });
+const BackgroundControls = dynamic(() => import("./controls/BackgroundControls"), { loading: () => <div className="p-4 text-sm text-gray-400">Loading background...</div> });
+
+export default function UIController({ isOpen: externalIsOpen, onClose }: { isOpen?: boolean; onClose?: () => void } = {}) {
+    const [internalIsOpen, setInternalIsOpen] = useState(false);
     const [activeTab, setActiveTab] = useState("fonts");
     const { resetTheme, randomizeAll, exportTheme, importTheme } = useTheme();
+
+    // Use external control if provided, otherwise use internal state
+    const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
+    const setIsOpen = onClose || ((value: boolean) => setInternalIsOpen(value));
 
     // Keyboard shortcut: Ctrl/Cmd + K
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if ((e.ctrlKey || e.metaKey) && e.key === "k") {
                 e.preventDefault();
-                setIsOpen((prev) => !prev);
+                setIsOpen(!isOpen);
             }
             if ((e.ctrlKey || e.metaKey) && e.key === "r" && isOpen) {
                 e.preventDefault();
@@ -32,7 +38,7 @@ export default function UIController() {
 
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [isOpen, resetTheme]);
+    }, [isOpen, resetTheme, setIsOpen]);
 
     const handleExport = () => {
         const json = exportTheme();
@@ -73,32 +79,6 @@ export default function UIController() {
 
     return (
         <>
-            {/* Randomize All Button */}
-            <motion.button
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                whileHover={{ scale: 1.1, rotate: 15 }}
-                whileTap={{ rotate: 360 }}
-                transition={{ delay: 1.1, rotate: { duration: 0.5 } }}
-                onClick={randomizeAll}
-                className="fixed bottom-6 right-6 z-[9999] p-4 bg-gradient-to-r from-secondary to-primary text-white rounded-full shadow-lg hover:shadow-2xl hover:shadow-primary/50 transition-shadow group animate-ripple"
-                title="Randomize Everything (Ctrl+R)"
-            >
-                <Shuffle className="w-6 h-6 group-hover:rotate-180 transition-transform duration-500" />
-            </motion.button>
-
-            {/* Settings/Toggle Button */}
-            <motion.button
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 1 }}
-                onClick={() => setIsOpen(!isOpen)}
-                className="fixed top-6 right-6 z-[9999] p-4 bg-gradient-to-r from-primary to-secondary text-white rounded-full shadow-lg hover:shadow-xl transition-shadow animate-ripple"
-                title="UI Controller (Ctrl+K)"
-            >
-                <Settings className="w-6 h-6" />
-            </motion.button>
-
             {/* Controller Panel */}
             <AnimatePresence>
                 {isOpen && (
@@ -127,12 +107,6 @@ export default function UIController() {
                                         <Settings className="w-6 h-6 text-primary" />
                                         UI Controller
                                     </h2>
-                                    <button
-                                        onClick={() => setIsOpen(false)}
-                                        className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-                                    >
-                                        <X className="w-5 h-5 text-white" />
-                                    </button>
                                 </div>
 
                                 {/* Action Buttons */}
@@ -150,17 +124,6 @@ export default function UIController() {
                                     >
                                         <Upload className="w-4 h-4" />
                                         Import
-                                    </button>
-                                    <button
-                                        onClick={() => {
-                                            if (confirm("Reset to default theme?")) {
-                                                resetTheme();
-                                            }
-                                        }}
-                                        className="flex-1 px-3 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-sm text-white flex items-center justify-center gap-2 transition-colors"
-                                    >
-                                        <RotateCcw className="w-4 h-4" />
-                                        Reset
                                     </button>
                                 </div>
                             </div>

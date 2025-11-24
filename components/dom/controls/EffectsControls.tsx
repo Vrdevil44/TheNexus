@@ -2,6 +2,7 @@
 
 import { useTheme } from "@/lib/contexts/ThemeContext";
 import { Shuffle } from "lucide-react";
+import CollapsibleSection from "@/components/ui/CollapsibleSection";
 
 export default function EffectsControls() {
     const { theme, updateEffects } = useTheme();
@@ -9,6 +10,7 @@ export default function EffectsControls() {
     // Provide default values for new properties to handle old saved themes
     const borderColor = theme.effects.borderColor || { h: 0, s: 0, l: 100 };
     const shadowColor = theme.effects.shadowColor || { h: 0, s: 0, l: 0 };
+    const cardColor = theme.effects.cardColor || { h: 0, s: 0, l: 100 };
     const borderWidth = theme.effects.borderWidth || "1px";
     const cardOpacity = theme.effects.cardOpacity ?? 0.1;
     const glowIntensity = theme.effects.glowIntensity ?? 0;
@@ -25,13 +27,16 @@ export default function EffectsControls() {
                 l: Math.floor(Math.random() * 40) + 40
             },
             blur: `${Math.floor(Math.random() * 20)}px`,
+            shadowEnabled: Math.random() > 0.3,
             shadowIntensity: parseFloat((Math.random() * 0.8).toFixed(2)),
             shadowColor: {
                 h: Math.floor(Math.random() * 360),
                 s: Math.floor(Math.random() * 50) + 30,
                 l: Math.floor(Math.random() * 40) + 10
             },
+            cardColor: { h: Math.floor(Math.random() * 360), s: Math.floor(Math.random() * 30), l: Math.floor(Math.random() * 10) + 90 },
             cardOpacity: parseFloat((Math.random() * 0.15 + 0.05).toFixed(2)),
+            glowEnabled: Math.random() > 0.5,
             glowIntensity: parseFloat((Math.random() * 0.5).toFixed(2)),
             saturate: parseFloat((Math.random() * 1 + 0.5).toFixed(2)),
             brightness: parseFloat((Math.random() * 0.5 + 0.75).toFixed(2)),
@@ -84,6 +89,7 @@ export default function EffectsControls() {
         step = "0.1",
         unit = "",
         description,
+        disabled = false
     }: {
         label: string;
         value: number | string;
@@ -93,8 +99,9 @@ export default function EffectsControls() {
         step?: string;
         unit?: string;
         description?: string;
+        disabled?: boolean;
     }) => (
-        <div className="mb-5">
+        <div className={`mb-5 ${disabled ? 'opacity-50 pointer-events-none' : ''}`}>
             <label className="block text-xs font-medium text-gray-300 mb-1.5">{label}</label>
             <div className="flex items-center gap-3">
                 <input
@@ -105,6 +112,7 @@ export default function EffectsControls() {
                     value={typeof value === "string" ? parseFloat(value) : value}
                     onChange={(e) => onChange(parseFloat(e.target.value))}
                     className="flex-1"
+                    disabled={disabled}
                 />
                 <span className="text-xs text-white font-mono w-16 text-right">
                     {typeof value === "string" ? value : value.toFixed(step === "1" ? 0 : step === "0.01" ? 2 : 1)}
@@ -119,12 +127,14 @@ export default function EffectsControls() {
         label,
         color,
         onChange,
+        disabled = false
     }: {
         label: string;
         color: { h: number; s: number; l: number };
         onChange: (color: { h: number; s: number; l: number }) => void;
+        disabled?: boolean;
     }) => (
-        <div className="mb-5">
+        <div className={`mb-5 ${disabled ? 'opacity-50 pointer-events-none' : ''}`}>
             <label className="block text-xs font-medium text-gray-300 mb-1.5">{label}</label>
             <div className="flex gap-2 items-center">
                 <input
@@ -132,11 +142,37 @@ export default function EffectsControls() {
                     value={hslToHex(color.h, color.s, color.l)}
                     onChange={(e) => onChange(hexToHSL(e.target.value))}
                     className="w-10 h-10 rounded border border-white/20 cursor-pointer"
+                    disabled={disabled}
                 />
                 <span className="text-[10px] text-gray-400 font-mono">
                     {hslToHex(color.h, color.s, color.l)}
                 </span>
             </div>
+        </div>
+    );
+
+    const Toggle = ({
+        label,
+        checked,
+        onChange,
+        description
+    }: {
+        label: string;
+        checked: boolean;
+        onChange: (checked: boolean) => void;
+        description?: string;
+    }) => (
+        <div className="mb-5 flex items-center justify-between">
+            <div>
+                <label className="block text-xs font-medium text-gray-300">{label}</label>
+                {description && <p className="text-[10px] text-gray-500 mt-0.5">{description}</p>}
+            </div>
+            <button
+                onClick={() => onChange(!checked)}
+                className={`w-10 h-5 rounded-full relative transition-colors duration-200 ${checked ? 'bg-primary' : 'bg-white/10'}`}
+            >
+                <div className={`absolute top-1 left-1 w-3 h-3 rounded-full bg-white transition-transform duration-200 ${checked ? 'translate-x-5' : 'translate-x-0'}`} />
+            </button>
         </div>
     );
 
@@ -157,9 +193,36 @@ export default function EffectsControls() {
                 </button>
             </div>
 
+            {/* Cards Section */}
+            <CollapsibleSection title="Cards & Tiles" defaultOpen={true}>
+                <ColorPicker
+                    label="Card Shade"
+                    color={cardColor}
+                    onChange={(color) => updateEffects({ cardColor: color })}
+                />
+                <EffectSlider
+                    label="Background Opacity"
+                    value={cardOpacity}
+                    onChange={(value: number) => updateEffects({ cardOpacity: value })}
+                    min="0"
+                    max="0.5"
+                    step="0.01"
+                    description="Transparency of the glass effect"
+                />
+                <EffectSlider
+                    label="Backdrop Blur"
+                    value={parseFloat(theme.effects.blur)}
+                    onChange={(value: number) => updateEffects({ blur: `${value}px` })}
+                    min="0"
+                    max="30"
+                    step="1"
+                    unit="px"
+                    description="Glassmorphism blur intensity"
+                />
+            </CollapsibleSection>
+
             {/* Borders Section */}
-            <div className="pt-3 border-t border-white/10">
-                <h4 className="text-sm font-semibold text-white mb-4">Borders</h4>
+            <CollapsibleSection title="Borders">
                 <EffectSlider
                     label="Border Radius"
                     value={parseFloat(theme.effects.borderRadius)}
@@ -185,11 +248,15 @@ export default function EffectsControls() {
                     color={borderColor}
                     onChange={(color) => updateEffects({ borderColor: color })}
                 />
-            </div>
+            </CollapsibleSection>
 
-            {/* Shadows Section */}
-            <div className="pt-3 border-t border-white/10">
-                <h4 className="text-sm font-semibold text-white mb-4">Shadows</h4>
+            {/* Shadows & Glow Section */}
+            <CollapsibleSection title="Shadows & Glow">
+                <Toggle
+                    label="Enable Shadows"
+                    checked={theme.effects.shadowEnabled ?? true}
+                    onChange={(checked) => updateEffects({ shadowEnabled: checked })}
+                />
                 <EffectSlider
                     label="Shadow Intensity"
                     value={theme.effects.shadowIntensity}
@@ -198,25 +265,21 @@ export default function EffectsControls() {
                     max="1"
                     step="0.05"
                     description="Strength of drop shadows"
+                    disabled={!theme.effects.shadowEnabled}
                 />
                 <ColorPicker
                     label="Shadow Color"
                     color={shadowColor}
                     onChange={(color) => updateEffects({ shadowColor: color })}
+                    disabled={!theme.effects.shadowEnabled}
                 />
-            </div>
 
-            {/* Cards Section */}
-            <div className="pt-3 border-t border-white/10">
-                <h4 className="text-sm font-semibold text-white mb-4">Cards</h4>
-                <EffectSlider
-                    label="Background Opacity"
-                    value={cardOpacity}
-                    onChange={(value: number) => updateEffects({ cardOpacity: value })}
-                    min="0"
-                    max="0.3"
-                    step="0.01"
-                    description="Card background transparency"
+                <div className="my-4 border-t border-white/5" />
+
+                <Toggle
+                    label="Enable Glow"
+                    checked={theme.effects.glowEnabled ?? true}
+                    onChange={(checked) => updateEffects({ glowEnabled: checked })}
                 />
                 <EffectSlider
                     label="Glow Intensity"
@@ -226,22 +289,12 @@ export default function EffectsControls() {
                     max="1"
                     step="0.05"
                     description="Halo/glow effect around cards"
+                    disabled={!theme.effects.glowEnabled}
                 />
-                <EffectSlider
-                    label="Backdrop Blur"
-                    value={parseFloat(theme.effects.blur)}
-                    onChange={(value: number) => updateEffects({ blur: `${value}px` })}
-                    min="0"
-                    max="30"
-                    step="1"
-                    unit="px"
-                    description="Glassmorphism blur intensity"
-                />
-            </div>
+            </CollapsibleSection>
 
             {/* Filters Section */}
-            <div className="pt-3 border-t border-white/10">
-                <h4 className="text-sm font-semibold text-white mb-4">Filters</h4>
+            <CollapsibleSection title="Global Filters">
                 <EffectSlider
                     label="Saturation"
                     value={saturate}
@@ -272,22 +325,24 @@ export default function EffectsControls() {
                     unit="x"
                     description="Global animation multiplier"
                 />
-            </div>
+            </CollapsibleSection>
 
             {/* Visual Preview */}
             <div className="pt-4 border-t border-white/10">
                 <h4 className="text-sm font-semibold text-white mb-3">Preview</h4>
                 <div
-                    className="p-6 bg-white backdrop-blur-md transition-all duration-300 relative"
+                    className="p-6 transition-all duration-300 relative"
                     style={{
                         borderRadius: theme.effects.borderRadius,
                         borderWidth: borderWidth,
                         borderColor: `hsl(${borderColor.h} ${borderColor.s}% ${borderColor.l}%)`,
                         borderStyle: "solid",
                         backdropFilter: `blur(${theme.effects.blur}) saturate(${saturate}) brightness(${brightness})`,
-                        boxShadow: `0 10px 30px hsl(${shadowColor.h} ${shadowColor.s}% ${shadowColor.l}% / ${theme.effects.shadowIntensity}), 
-                                    0 0 ${glowIntensity * 40}px hsl(${borderColor.h} ${borderColor.s}% ${borderColor.l}% / ${glowIntensity})`,
-                        backgroundColor: `rgba(255, 255, 255, ${cardOpacity})`,
+                        boxShadow: [
+                            theme.effects.shadowEnabled ? `0 10px 30px hsl(${shadowColor.h} ${shadowColor.s}% ${shadowColor.l}% / ${theme.effects.shadowIntensity})` : null,
+                            theme.effects.glowEnabled ? `0 0 ${glowIntensity * 40}px hsl(${borderColor.h} ${borderColor.s}% ${borderColor.l}% / ${glowIntensity})` : null
+                        ].filter(Boolean).join(', '),
+                        backgroundColor: `hsla(${cardColor.h}, ${cardColor.s}%, ${cardColor.l}%, ${cardOpacity})`,
                     }}
                 >
                     <p className="text-white text-sm font-medium">

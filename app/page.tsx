@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import HeroOverlay from "@/components/dom/HeroOverlay";
 import ExperienceSection from "@/components/dom/ExperienceSection";
 import SkillsMatrix from "@/components/dom/SkillsMatrix";
@@ -12,8 +13,11 @@ import UIController from "@/components/dom/UIController";
 import GithubSection from "@/components/dom/GithubSection";
 import VantaBackground from "@/components/canvas/VantaBackground";
 import BackdropLayer from "@/components/canvas/BackdropLayer";
+import ToolPalette from "@/components/ui/ToolPalette";
 
 export default function Home() {
+  const [isUIControllerOpen, setIsUIControllerOpen] = useState(false);
+
   return (
     <main className="relative w-full min-h-screen overflow-x-hidden scroll-smooth">
       <VantaBackground />
@@ -44,7 +48,15 @@ export default function Home() {
         <ContactSection />
       </div>
       <Footer />
-      <UIController />
+
+      {/* Tool Palette - Top Right */}
+      <ToolPalette onOpenSettings={() => setIsUIControllerOpen(true)} />
+
+      {/* UI Controller - Controlled by Tool Palette */}
+      <UIController
+        isOpen={isUIControllerOpen}
+        onClose={() => setIsUIControllerOpen(false)}
+      />
     </main>
   );
 }

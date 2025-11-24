@@ -18,6 +18,12 @@
   --color-primary: 180 100% 50%;
   --color-secondary: 300 100% 50%;
 
+  /* Text Colors */
+  --text-white: #ffffff;
+  --text-gray-300: #d1d5db;
+  --text-gray-400: #9ca3af;
+  --text-gray-500: #6b7280;
+
   /* Background Gradient */
   --bg-start: 240 10% 5%;
   --bg-end: 240 10% 3%;
@@ -43,6 +49,23 @@
   --transition-fast: 0.15s;
   --transition-normal: 0.3s;
   --transition-slow: 0.6s;
+}
+
+/* Text color utility classes that use CSS variables */
+.text-theme-white {
+  color: var(--text-white);
+}
+
+.text-theme-gray-300 {
+  color: var(--text-gray-300);
+}
+
+.text-theme-gray-400 {
+  color: var(--text-gray-400);
+}
+
+.text-theme-gray-500 {
+  color: var(--text-gray-500);
 }
 
 body {
@@ -163,10 +186,11 @@ section::before,
 
 /* Glass effect */
 .glass {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: hsla(var(--card-bg-color) / var(--card-opacity));
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+  border: var(--card-border-width) solid var(--card-border-color);
+  box-shadow: var(--card-shadow), var(--card-glow);
   will-change: transform, opacity;
   border-radius: var(--border-radius);
 }
