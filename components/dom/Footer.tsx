@@ -1,6 +1,6 @@
 "use client";
 
-import { Github, Linkedin, Mail, ArrowUp } from "lucide-react";
+import { Github, Linkedin, Mail, ArrowUp, Link } from "lucide-react";
 
 export default function Footer() {
     const scrollToTop = () => {
@@ -18,9 +18,10 @@ export default function Footer() {
     ];
 
     const socialLinks = [
-        { icon: Linkedin, href: "https://linktr.ee/VibhuDikshit", label: "LinkedIn" },
-        { icon: Github, href: "https://github.com/vibhudikshit", label: "GitHub" },
-        { icon: Mail, href: "mailto:vibhu.dikshit@example.com", label: "Email" },
+        { icon: Linkedin, href: "https://www.linkedin.com/in/vibhudikshit/", label: "LinkedIn" },
+        { icon: Github, href: "https://github.com/Vrdevil44", label: "GitHub" },
+        { icon: Mail, href: "mailto:vrdikshit44@gmail.com", label: "Email" },
+        { icon: Link, href: "https://linktr.ee/VibhuDikshit", label: "Linktree" },
     ];
 
     return (

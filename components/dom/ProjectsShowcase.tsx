@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { projects, Project } from "@/lib/data/projects";
@@ -45,11 +46,13 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
 
                 {/* Image */}
                 {project.image && (
-                    <div className="mb-6 rounded-xl overflow-hidden border border-white/10">
-                        <img
+                    <div className="relative mb-6 rounded-xl overflow-hidden border border-white/10 aspect-video">
+                        <Image
                             src={project.image}
                             alt={project.title}
-                            className="w-full h-auto object-cover"
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
                         />
                     </div>
                 )}
@@ -145,10 +148,12 @@ function ProjectCard({ project, index, onExpand }: { project: Project; index: nu
             {/* Project Image (Hover State) */}
             {project.image && (
                 <div className="absolute inset-0 z-0 h-full w-full">
-                    <img
+                    <Image
                         src={project.image}
                         alt={project.title}
-                        className="w-full h-full object-cover object-top opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out"
+                        fill
+                        className="object-cover object-top opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                 </div>
             )}
