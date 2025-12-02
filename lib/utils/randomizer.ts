@@ -85,6 +85,8 @@ export const generateRandomEffects = (): ThemeEffects => {
             normal: "0.3s",
             slow: "0.6s",
         },
+        componentBlur: `${randomInt(4, 16)}px`,
+        navShape: randomItem(['rounded', 'boxy', 'beveled'] as const),
     };
 };
 
