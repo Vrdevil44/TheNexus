@@ -78,6 +78,8 @@ export interface ThemeEffects {
         normal: string;
         slow: string;
     };
+    componentBlur: string;
+    navShape: 'rounded' | 'boxy' | 'beveled';
 }
 
 // ... existing code ...
@@ -88,12 +90,12 @@ const defaultTheme: ThemeState = {
         body: "Work Sans",
         mono: "JetBrains Mono",
         sizes: {
-            h1: "5.5rem",
-            h2: "3rem",
-            h3: "2rem",
-            h4: "1.5rem",
-            body: "1rem",
-            small: "0.875rem",
+            h1: "clamp(3rem, 5vw + 1rem, 5.5rem)",
+            h2: "clamp(2rem, 4vw + 1rem, 3.5rem)",
+            h3: "clamp(1.5rem, 3vw + 1rem, 2.5rem)",
+            h4: "clamp(1.25rem, 2vw + 1rem, 2rem)",
+            body: "clamp(1rem, 1vw + 0.5rem, 1.125rem)",
+            small: "clamp(0.75rem, 0.5vw + 0.5rem, 0.875rem)",
         },
         weights: {
             normal: 400,
@@ -123,11 +125,11 @@ const defaultTheme: ThemeState = {
         },
     },
     spacing: {
-        section: "5rem",
-        sectionMd: "10rem",
-        card: "1.5rem",
-        cardMd: "2rem",
-        gap: "2rem",
+        section: "clamp(3rem, 5vw + 2rem, 6rem)",
+        sectionMd: "clamp(5rem, 8vw + 2rem, 10rem)",
+        card: "clamp(1rem, 2vw + 0.5rem, 2rem)",
+        cardMd: "clamp(1.5rem, 3vw + 0.5rem, 2.5rem)",
+        gap: "clamp(1rem, 2vw + 0.5rem, 2.5rem)",
     },
     effects: {
         borderRadius: "0.75rem",
@@ -153,6 +155,8 @@ const defaultTheme: ThemeState = {
             normal: "0.3s",
             slow: "0.6s",
         },
+        componentBlur: "8px",
+        navShape: "rounded",
     },
     background: {
         vantaEffect: "gravity-stars",
@@ -784,6 +788,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         // Effects
         root.style.setProperty("--border-radius", theme.effects.borderRadius);
         root.style.setProperty("--blur", theme.effects.blur);
+        root.style.setProperty("--glass-blur", theme.effects.componentBlur || "12px");
         root.style.setProperty("--shadow-intensity", (theme.effects.shadowIntensity ?? 0.5).toString());
         root.style.setProperty("--animation-speed", (theme.effects.animationSpeed ?? 1).toString());
 

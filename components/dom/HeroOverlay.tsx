@@ -79,12 +79,12 @@ export default function HeroOverlay() {
     }, [keySequence, toggleHackerMode]);
 
     return (
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-4">
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-4 pt-32 md:pt-0">
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-center max-w-4xl"
+                className="text-center max-w-4xl w-full"
             >
                 {/* Name */}
                 <motion.div
@@ -95,8 +95,7 @@ export default function HeroOverlay() {
                 >
                     <AnimatedTitle
                         text="Vibhu Dikshit"
-                        className="font-bold text-white tracking-tight justify-center"
-                        style={{ fontSize: "var(--text-h1)" }}
+                        className="font-bold text-white tracking-tight justify-center text-5xl md:text-7xl lg:text-8xl"
                     />
                 </motion.div>
 
@@ -108,17 +107,15 @@ export default function HeroOverlay() {
                     className="mb-6"
                 >
                     <h2
-                        className="font-bold bg-clip-text text-transparent mb-2"
+                        className="font-bold bg-clip-text text-transparent mb-2 text-2xl md:text-4xl lg:text-5xl"
                         style={{
-                            fontSize: "var(--text-h2)",
                             backgroundImage: `linear-gradient(to right, hsl(${theme.colors.primary.h}, ${theme.colors.primary.s}%, ${theme.colors.primary.l}%), hsl(${theme.colors.secondary.h}, ${theme.colors.secondary.s}%, ${theme.colors.secondary.l}%), hsl(${theme.colors.primary.h}, ${theme.colors.primary.s}%, ${theme.colors.primary.l}%))`
                         }}
                     >
                         Architecting Digital Infrastructure
                     </h2>
                     <h3
-                        className="text-theme-gray-300 font-light"
-                        style={{ fontSize: "var(--text-h3)" }}
+                        className="text-theme-gray-300 font-light text-xl md:text-2xl lg:text-3xl"
                     >
                         Building Scalable Solutions
                     </h3>
@@ -129,8 +126,7 @@ export default function HeroOverlay() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.8, delay: 0.8 }}
-                    className="text-theme-gray-400 max-w-2xl mx-auto mb-12 leading-relaxed"
-                    style={{ fontSize: "var(--text-body)" }}
+                    className="text-theme-gray-400 max-w-2xl mx-auto mb-12 leading-relaxed text-sm md:text-base lg:text-lg"
                 >
                     Bridging the gap between enterprise systems and innovative applications.
                     Specialized in cloud infrastructure, full-stack development, and system optimization.
@@ -141,7 +137,7 @@ export default function HeroOverlay() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 1 }}
-                    className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12 mb-12"
+                    className="grid grid-cols-3 gap-2 md:gap-12 mb-12 max-w-md md:max-w-none mx-auto"
                 >
                     {stats.map((stat, index) => (
                         <motion.div
@@ -149,10 +145,10 @@ export default function HeroOverlay() {
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.5, delay: 1.2 + index * 0.2 }}
-                            className="p-4 glass"
+                            className="p-2 md:p-4 glass group hover:border-primary/50 transition-all duration-300 flex flex-col items-center justify-center"
                         >
                             <AnimatedCounter end={stat.value} suffix={stat.suffix} />
-                            <p className="text-theme-gray-400 text-sm mt-2">{stat.label}</p>
+                            <p className="text-theme-gray-400 text-xs md:text-sm mt-1 text-center leading-tight">{stat.label}</p>
                         </motion.div>
                     ))}
                 </motion.div>
@@ -162,17 +158,17 @@ export default function HeroOverlay() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 1.6 }}
-                    className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+                    className="flex flex-row gap-3 justify-center items-center"
                 >
                     <a
                         href="#contact"
-                        className="px-8 py-4 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-lg hover:shadow-lg hover:shadow-primary/50 transition-all duration-300 transform hover:scale-105"
+                        className="px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-lg hover:shadow-lg hover:shadow-primary/50 transition-all duration-300 transform hover:scale-105 text-sm md:text-base whitespace-nowrap"
                     >
                         Let's Connect
                     </a>
                     <a
                         href="#projects"
-                        className="px-8 py-4 bg-white/10 border border-white/20 text-white font-semibold rounded-lg hover:bg-white/20 transition-all duration-300 backdrop-blur-sm"
+                        className="px-6 py-3 md:px-8 md:py-4 glass text-white font-semibold rounded-lg hover:bg-white/20 hover:border-primary/50 transition-all duration-300 text-sm md:text-base whitespace-nowrap"
                     >
                         View Projects
                     </a>
@@ -184,7 +180,7 @@ export default function HeroOverlay() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.8, delay: 2 }}
-                className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
+                className="absolute bottom-4 md:bottom-10 left-1/2 transform -translate-x-1/2 z-0"
             >
                 <motion.div
                     animate={{ y: [0, 10, 0] }}
@@ -192,8 +188,8 @@ export default function HeroOverlay() {
                     className="flex flex-col items-center gap-2 cursor-pointer"
                     onClick={() => document.getElementById("experience")?.scrollIntoView({ behavior: "smooth" })}
                 >
-                    <span className="text-theme-gray-400 text-sm">Scroll to explore</span>
-                    <ChevronDown className="w-6 h-6 text-primary" />
+                    <span className="text-theme-gray-400 text-xs md:text-sm">Scroll to explore</span>
+                    <ChevronDown className="w-5 h-5 md:w-6 md:h-6 text-primary" />
                 </motion.div>
             </motion.div>
         </div>

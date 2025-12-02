@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/lib/contexts/ThemeContext";
 import { HackerModeProvider } from "@/lib/context/HackerModeContext";
 import BackgroundManager from "@/components/dom/BackgroundManager";
 import HackerModeOverlay from "@/components/ui/HackerModeOverlay";
+import PhantomNavbar from "@/components/ui/PhantomNavbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -51,6 +52,7 @@ export default function RootLayout({
           <HackerModeProvider>
             <BackgroundManager />
             <HackerModeOverlay />
+            <PhantomNavbar />
             {children}
           </HackerModeProvider>
         </ThemeProvider>

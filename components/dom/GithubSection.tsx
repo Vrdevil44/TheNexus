@@ -93,25 +93,37 @@ export default function GithubSection() {
                         className="flex flex-col"
                     >
                         <h3 className="text-2xl font-bold text-white mb-4">Activity</h3>
-                        <div className="h-auto lg:h-[450px] p-6 glass overflow-hidden flex items-center justify-center text-white">
-                            <div className="w-full overflow-x-auto flex justify-center">
-                                <GitHubCalendar
-                                    username={GITHUB_USERNAME}
-                                    colorScheme="dark"
-                                    theme={{
-                                        dark: [
-                                            "rgba(255, 255, 255, 0.05)",
-                                            `hsl(${theme.colors.primary.h}, ${theme.colors.primary.s}%, 25%)`,
-                                            `hsl(${theme.colors.primary.h}, ${theme.colors.primary.s}%, 40%)`,
-                                            `hsl(${theme.colors.primary.h}, ${theme.colors.primary.s}%, 60%)`,
-                                            `hsl(${theme.colors.primary.h}, ${theme.colors.primary.s}%, 80%)`,
-                                        ],
-                                    }}
-                                    fontSize={14}
-                                    blockSize={12}
-                                    blockMargin={4}
-                                />
+                        <div className="h-auto lg:h-[450px] p-6 glass overflow-hidden flex items-center justify-center text-white relative group">
+                            {/* Scrolling Container */}
+                            <div className="w-full overflow-hidden relative">
+                                <div className="flex gap-8 animate-scroll-left hover:pause-animation w-max">
+                                    {/* Render twice for seamless loop */}
+                                    {[0, 1].map((i) => (
+                                        <div key={i} className="flex-shrink-0">
+                                            <GitHubCalendar
+                                                username={GITHUB_USERNAME}
+                                                colorScheme="dark"
+                                                theme={{
+                                                    dark: [
+                                                        "rgba(255, 255, 255, 0.05)",
+                                                        `hsl(${theme.colors.primary.h}, ${theme.colors.primary.s}%, 25%)`,
+                                                        `hsl(${theme.colors.primary.h}, ${theme.colors.primary.s}%, 40%)`,
+                                                        `hsl(${theme.colors.primary.h}, ${theme.colors.primary.s}%, 60%)`,
+                                                        `hsl(${theme.colors.primary.h}, ${theme.colors.primary.s}%, 80%)`,
+                                                    ],
+                                                }}
+                                                fontSize={14}
+                                                blockSize={12}
+                                                blockMargin={4}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
+
+                            {/* Gradient Masks for Fade Effect */}
+                            <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-black/50 to-transparent pointer-events-none" />
+                            <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-black/50 to-transparent pointer-events-none" />
                         </div>
                     </motion.div>
 

@@ -210,14 +210,14 @@ export default function EffectsControls() {
                     description="Transparency of the glass effect"
                 />
                 <EffectSlider
-                    label="Backdrop Blur"
-                    value={parseFloat(theme.effects.blur)}
-                    onChange={(value: number) => updateEffects({ blur: `${value}px` })}
+                    label="Component Blur"
+                    value={parseFloat(theme.effects.componentBlur || "12")}
+                    onChange={(value: number) => updateEffects({ componentBlur: `${value}px` })}
                     min="0"
                     max="30"
                     step="1"
                     unit="px"
-                    description="Glassmorphism blur intensity"
+                    description="Blur for cards and navbar"
                 />
             </CollapsibleSection>
 
@@ -248,6 +248,23 @@ export default function EffectsControls() {
                     color={borderColor}
                     onChange={(color) => updateEffects({ borderColor: color })}
                 />
+                <div className="mb-5">
+                    <label className="block text-xs font-medium text-gray-300 mb-1.5">Navbar Shape</label>
+                    <div className="grid grid-cols-3 gap-2">
+                        {['rounded', 'boxy', 'beveled'].map((shape) => (
+                            <button
+                                key={shape}
+                                onClick={() => updateEffects({ navShape: shape as any })}
+                                className={`px-2 py-1.5 text-[10px] border rounded transition-colors ${theme.effects.navShape === shape
+                                    ? 'bg-primary text-white border-primary'
+                                    : 'bg-transparent text-gray-400 border-white/20 hover:border-white/40'
+                                    }`}
+                            >
+                                {shape.charAt(0).toUpperCase() + shape.slice(1)}
+                            </button>
+                        ))}
+                    </div>
+                </div>
             </CollapsibleSection>
 
             {/* Shadows & Glow Section */}

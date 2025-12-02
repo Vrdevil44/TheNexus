@@ -107,6 +107,12 @@ export default function UIController({ isOpen: externalIsOpen, onClose }: { isOp
                                         <Settings className="w-6 h-6 text-primary" />
                                         UI Controller
                                     </h2>
+                                    <button
+                                        onClick={() => setIsOpen(false)}
+                                        className="md:hidden p-2 rounded-full hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+                                    >
+                                        <X className="w-6 h-6" />
+                                    </button>
                                 </div>
 
                                 {/* Action Buttons */}

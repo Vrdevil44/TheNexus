@@ -11,8 +11,7 @@ import ContactSection from "@/components/dom/ContactSection";
 import Footer from "@/components/dom/Footer";
 import UIController from "@/components/dom/UIController";
 import GithubSection from "@/components/dom/GithubSection";
-import VantaBackground from "@/components/canvas/VantaBackground";
-import BackdropLayer from "@/components/canvas/BackdropLayer";
+
 import ToolPalette from "@/components/ui/ToolPalette";
 
 export default function Home() {
@@ -20,8 +19,7 @@ export default function Home() {
 
   return (
     <main className="relative w-full min-h-screen overflow-x-hidden scroll-smooth">
-      <VantaBackground />
-      <BackdropLayer />
+
 
       <div id="hero" className="relative w-full h-screen" style={{ zIndex: 10 }}>
         <HeroOverlay />

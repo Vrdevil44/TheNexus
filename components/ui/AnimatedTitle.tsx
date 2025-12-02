@@ -43,7 +43,7 @@ export default function AnimatedTitle({ text, className, style }: AnimatedTitleP
             className={cn("flex overflow-hidden cursor-default", className)}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            style={{ fontFamily: theme.fonts.heading, ...style }}
+            style={{ fontFamily: theme.fonts.heading, color: theme.colors.text.white, ...style }}
         >
             {characters.map((char, index) => (
                 <AnimatedChar

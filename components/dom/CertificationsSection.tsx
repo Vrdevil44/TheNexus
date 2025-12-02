@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { certifications } from "@/lib/data/certifications";
-import { Award, Clock } from "lucide-react";
+import { Award, Clock, Cloud, Network, Shield, Code, Terminal } from "lucide-react";
 
 export default function CertificationsSection() {
     const inProgress = certifications.filter((cert) => cert.status === "in-progress");
@@ -16,6 +16,21 @@ export default function CertificationsSection() {
             security: "from-red-500/20 to-pink-500/20 border-red-500/30",
         };
         return colors[category as keyof typeof colors] || colors.development;
+    };
+
+    const getCategoryIcon = (category: string) => {
+        switch (category) {
+            case "cloud":
+                return <Cloud className="w-5 h-5 md:w-6 md:h-6 text-primary" />;
+            case "networking":
+                return <Network className="w-5 h-5 md:w-6 md:h-6 text-secondary" />;
+            case "security":
+                return <Shield className="w-5 h-5 md:w-6 md:h-6 text-primary" />;
+            case "development":
+                return <Code className="w-5 h-5 md:w-6 md:h-6 text-secondary" />;
+            default:
+                return <Terminal className="w-5 h-5 md:w-6 md:h-6 text-gray-400" />;
+        }
     };
 
     return (
@@ -42,7 +57,7 @@ export default function CertificationsSection() {
                             <Clock className="w-6 h-6" />
                             In Progress
                         </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
                             {inProgress.map((cert, index) => (
                                 <motion.div
                                     key={index}
@@ -50,20 +65,24 @@ export default function CertificationsSection() {
                                     whileInView={{ opacity: 1, x: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ delay: index * 0.1 }}
-                                    className={`p-6 rounded-xl bg-gradient-to-br ${getCategoryColor(
+                                    className={`p-4 md:p-6 rounded-xl bg-gradient-to-br ${getCategoryColor(
                                         cert.category
-                                    )} glass`}
+                                    )} glass flex flex-col justify-between h-full`}
                                 >
-                                    <div className="flex items-start justify-between">
-                                        <div>
-                                            <h4 className="text-lg font-bold text-white mb-1">
-                                                {cert.name}
-                                            </h4>
-                                            <p className="text-gray-400 text-sm">{cert.issuer}</p>
+                                    <div className="mb-4">
+                                        <div className="flex justify-between items-start mb-3">
+                                            {getCategoryIcon(cert.category)}
+                                            <span className="px-2 py-0.5 md:px-3 md:py-1 bg-secondary/20 text-secondary text-[10px] md:text-xs font-mono rounded-full border border-secondary/30 whitespace-nowrap">
+                                                {cert.year}
+                                            </span>
                                         </div>
-                                        <span className="px-3 py-1 bg-secondary/20 text-secondary text-xs font-mono rounded-full border border-secondary/30">
-                                            {cert.year}
-                                        </span>
+                                        <h4 className="text-sm md:text-lg font-bold text-white mb-1 leading-tight">
+                                            {cert.name}
+                                        </h4>
+                                        <p className="text-gray-400 text-xs md:text-sm">{cert.issuer}</p>
+                                    </div>
+                                    <div className="w-full bg-white/10 rounded-full h-1.5 mt-auto">
+                                        <div className="bg-secondary h-1.5 rounded-full w-2/3 animate-pulse" />
                                     </div>
                                 </motion.div>
                             ))}
@@ -77,7 +96,7 @@ export default function CertificationsSection() {
                         <Award className="w-6 h-6" />
                         Completed
                     </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
                         {completed.map((cert, index) => (
                             <motion.div
                                 key={index}
@@ -86,15 +105,20 @@ export default function CertificationsSection() {
                                 viewport={{ once: true }}
                                 transition={{ delay: index * 0.05 }}
                                 whileHover={{ scale: 1.05 }}
-                                className={`p-6 rounded-xl bg-gradient-to-br ${getCategoryColor(
+                                className={`p-4 md:p-6 rounded-xl bg-gradient-to-br ${getCategoryColor(
                                     cert.category
-                                )} glass cursor-pointer`}
+                                )} glass cursor-pointer flex flex-col h-full`}
                             >
-                                <h4 className="text-lg font-bold text-white mb-2">
+                                <div className="flex justify-between items-start mb-3">
+                                    {getCategoryIcon(cert.category)}
+                                    <span className="text-primary text-[10px] md:text-xs font-mono opacity-80">
+                                        {cert.year}
+                                    </span>
+                                </div>
+                                <h4 className="text-sm md:text-lg font-bold text-white mb-1 leading-tight">
                                     {cert.name}
                                 </h4>
-                                <p className="text-gray-400 text-sm mb-1">{cert.issuer}</p>
-                                <span className="text-primary text-xs font-mono">{cert.year}</span>
+                                <p className="text-gray-400 text-xs md:text-sm mt-auto">{cert.issuer}</p>
                             </motion.div>
                         ))}
                     </div>

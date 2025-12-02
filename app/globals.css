@@ -7,12 +7,12 @@
   --font-heading: "Inter";
   --font-body: "Inter";
   --font-mono: "JetBrains Mono";
-  --text-h1: 5rem;
-  --text-h2: 3rem;
-  --text-h3: 2rem;
-  --text-h4: 1.5rem;
-  --text-body: 1rem;
-  --text-small: 0.875rem;
+  --text-h1: clamp(3rem, 5vw + 1rem, 5.5rem);
+  --text-h2: clamp(2rem, 4vw + 1rem, 3.5rem);
+  --text-h3: clamp(1.5rem, 3vw + 1rem, 2.5rem);
+  --text-h4: clamp(1.25rem, 2vw + 1rem, 2rem);
+  --text-body: clamp(1rem, 1vw + 0.5rem, 1.125rem);
+  --text-small: clamp(0.75rem, 0.5vw + 0.5rem, 0.875rem);
 
   /* Colors - Primary */
   --color-primary: 180 100% 50%;
@@ -29,11 +29,11 @@
   --bg-end: 240 10% 3%;
 
   /* Spacing */
-  --spacing-section: 5rem;
-  --spacing-section-md: 10rem;
-  --spacing-card: 1.5rem;
-  --spacing-card-md: 2rem;
-  --spacing-gap: 2rem;
+  --spacing-section: clamp(3rem, 5vw + 2rem, 6rem);
+  --spacing-section-md: clamp(5rem, 8vw + 2rem, 10rem);
+  --spacing-card: clamp(1rem, 2vw + 0.5rem, 2rem);
+  --spacing-card-md: clamp(1.5rem, 3vw + 0.5rem, 2.5rem);
+  --spacing-gap: clamp(1rem, 2vw + 0.5rem, 2.5rem);
 
   /* Effects */
   --border-radius: 0.75rem;
@@ -187,12 +187,13 @@ section::before,
 /* Glass effect */
 .glass {
   background: hsla(var(--card-bg-color) / var(--card-opacity));
-  backdrop-filter: blur(var(--blur));
-  -webkit-backdrop-filter: blur(var(--blur));
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
   border: var(--card-border-width) solid var(--card-border-color);
   box-shadow: var(--card-shadow), var(--card-glow);
   will-change: transform, opacity;
   border-radius: var(--border-radius);
+  isolation: isolate;
 }
 
 /* GitHub Calendar Text Colors */
@@ -231,4 +232,8 @@ section::before,
 
 .animate-ripple {
   animation: ripple 3s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+.pause-animation {
+  animation-play-state: paused;
 }

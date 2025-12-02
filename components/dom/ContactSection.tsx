@@ -146,16 +146,26 @@ export default function ContactSection() {
                                 ))}
                             </div>
 
-                            <div className="mt-8 pt-8 border-t border-white/10">
+                            <div className="mt-8 pt-8 border-t border-white/10 flex flex-row gap-3">
                                 <a
-                                    href={`${process.env.NODE_ENV === 'production' ? '/TheNexus' : ''}/Vibhu_Dikshit_CV.pdf`}
+                                    href={`${process.env.NODE_ENV === 'production' ? '/portfolio' : ''}/resume.pdf`}
+                                    download="Vibhu_Dikshit_Resume.pdf"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center justify-center gap-2 px-4 py-3 bg-white/10 border border-white/20 text-white font-semibold rounded-lg hover:bg-white/20 transition-all duration-300 backdrop-blur-sm text-center flex-1 group text-sm"
+                                >
+                                    <Download className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                                    Resume
+                                </a>
+                                <a
+                                    href={`${process.env.NODE_ENV === 'production' ? '/portfolio' : ''}/cv.pdf`}
                                     download="Vibhu_Dikshit_CV.pdf"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center justify-center gap-2 px-6 py-4 bg-white/10 border border-white/20 text-white font-semibold rounded-lg hover:bg-white/20 transition-all duration-300 backdrop-blur-sm text-center w-full group"
+                                    className="flex items-center justify-center gap-2 px-4 py-3 bg-primary/10 border border-primary/20 text-white font-semibold rounded-lg hover:bg-primary/20 transition-all duration-300 backdrop-blur-sm text-center flex-1 group text-sm"
                                 >
-                                    <Download className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                                    Download Resume
+                                    <Download className="w-4 h-4 group-hover:scale-110 transition-transform text-primary" />
+                                    CV
                                 </a>
                             </div>
                         </div>

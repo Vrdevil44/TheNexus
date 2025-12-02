@@ -54,6 +54,17 @@ export default function FontControls() {
     // Helper to convert rem to pt (approximate for display)
     const remToPt = (rem: string) => Math.round(parseFloat(rem) * 16);
 
+    // Helper to safely parse size values (handles rem, px, and clamp)
+    const parseSize = (size: string) => {
+        if (!size) return 1;
+        // Handle clamp values - extract the minimum size (first argument)
+        if (size.includes("clamp")) {
+            const parts = size.replace("clamp(", "").split(",");
+            return parseFloat(parts[0]) || 1;
+        }
+        return parseFloat(size) || 1;
+    };
+
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -156,7 +167,7 @@ export default function FontControls() {
                                 min={min}
                                 max={max}
                                 step={step}
-                                value={parseFloat(theme.fonts.sizes[key as keyof typeof theme.fonts.sizes])}
+                                value={parseSize(theme.fonts.sizes[key as keyof typeof theme.fonts.sizes])}
                                 onChange={(e) =>
                                     updateFonts({
                                         sizes: {
