@@ -6,7 +6,7 @@ const repoName = 'TheNexus';
 const nextConfig = {
     output: 'export',
     basePath: isProd ? `/${repoName}` : '',
-    assetPrefix: isProd ? `/${repoName}/` : '',
+    trailingSlash: true,
     images: {
         unoptimized: true,
     },
