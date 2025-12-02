@@ -1,8 +1,8 @@
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { projects, Project } from "@/lib/data/projects";
 import { ExternalLink, Zap, Target, TrendingUp, Maximize2, X } from "lucide-react";
+import { getAssetPath } from "@/lib/utils/paths";
 
 function ProjectModal({ project, onClose }: { project: Project; onClose: () => void }) {
     // Close on escape key
@@ -47,12 +47,10 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
                 {/* Image */}
                 {project.image && (
                     <div className="relative mb-6 rounded-xl overflow-hidden border border-white/10 aspect-video">
-                        <Image
-                            src={project.image}
+                        <img
+                            src={getAssetPath(project.image)}
                             alt={project.title}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+                            className="object-cover w-full h-full"
                         />
                     </div>
                 )}
@@ -148,12 +146,10 @@ function ProjectCard({ project, index, onExpand }: { project: Project; index: nu
             {/* Project Image (Hover State) */}
             {project.image && (
                 <div className="absolute inset-0 z-0 h-full w-full">
-                    <Image
-                        src={project.image}
+                    <img
+                        src={getAssetPath(project.image)}
                         alt={project.title}
-                        fill
-                        className="object-cover object-top opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover object-top opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out w-full h-full"
                     />
                 </div>
             )}

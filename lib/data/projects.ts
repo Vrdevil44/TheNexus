@@ -22,7 +22,7 @@ export const projects: Project[] = [
         role: "Technical Lead - Backend Architecture & Product Development",
         metrics: ["Real-time data processing", "Scalable architecture", "Production deployment"],
         link: "https://prognosys-plum.vercel.app/frontend/biomarkers.html#home",
-        image: "/images/projects/prognosys-preview.png",
+        image: "/images/prognosys-preview.png",
     },
     {
         title: "Nebula-Portal",
@@ -34,7 +34,7 @@ export const projects: Project[] = [
         role: "Frontend Developer - 3D Implementation & Performance",
         metrics: ["60fps rendering", "< 2s load time", "Mobile optimized"],
         link: "https://vrdevil44.github.io/Nebula-Portal/",
-        image: "/images/projects/nebula-portal.png",
+        image: "/images/nebula-portal.png",
     },
     {
         title: "Fractal-Gallery",
@@ -46,7 +46,7 @@ export const projects: Project[] = [
         role: "Full-Stack Developer - 3D Graphics & User Experience",
         metrics: ["Real-time rendering", "Interactive controls", "Educational impact"],
         link: "https://vrdevil44.github.io/Fractal-Gallery/",
-        image: "/images/projects/fractal-gallery.png",
+        image: "/images/fractal-gallery.png",
     },
     {
         title: "MiRo-E Robot Emotion",
@@ -58,7 +58,7 @@ export const projects: Project[] = [
         role: "ML Engineer - Model Development & Integration",
         metrics: ["82% accuracy", "Real-time processing", "Live deployment"],
         link: "https://www.linkedin.com/posts/vibhudikshit_miro-ufv-openhouse-activity-7122164067334582272-_loL?utm_source=share&utm_medium=member_desktop&rcm=ACoAAB1XZqgB2nagLk2bGrZyIjD4T7f4ZoPoA80",
-        image: "/images/projects/miro-e-robot.png",
+        image: "/images/miro-e-robot.png",
     },
     {
         title: "Enterprise Billing System",
@@ -70,7 +70,7 @@ export const projects: Project[] = [
         role: "Lead Developer - Full-Stack Implementation & Design",
         metrics: ["Production deployment", "Enterprise scale", "Modular design"],
         link: "https://vrdevil44.github.io/BMS-project/",
-        image: "/images/projects/bms-project.png",
+        image: "/images/bms-project.png",
     },
     {
         title: "The Nexus",
@@ -82,7 +82,7 @@ export const projects: Project[] = [
         role: "Developer",
         link: "https://vrdevil44.github.io/TheNexus/",
         metrics: ["Metric 1", "Metric 2"],
-        image: "/images/projects/the-nexus.png",
+        image: "/images/the-nexus.png",
     },
     {
         title: "HTML CSS Animated Form",
@@ -94,7 +94,7 @@ export const projects: Project[] = [
         role: "Developer",
         link: "https://vrdevil44.github.io/HTML-CSS-Animated-Form/",
         metrics: ["Metric 1", "Metric 2"],
-        image: "/images/projects/html-css-animated-form.png",
+        image: "/images/html-css-animated-form.png",
     },
     {
         title: "Myfolio",
@@ -106,7 +106,7 @@ export const projects: Project[] = [
         role: "Developer",
         link: "https://vrdevil44.github.io/Myfolio/",
         metrics: ["Metric 1", "Metric 2"],
-        image: "/images/projects/myfolio.png",
+        image: "/images/myfolio.png",
     },
     {
         title: "Webly",
@@ -118,7 +118,7 @@ export const projects: Project[] = [
         role: "Developer",
         link: "https://vrdevil44.github.io/.Webly/",
         metrics: ["Metric 1", "Metric 2"],
-        image: "/images/projects/webly.png",
+        image: "/images/webly.png",
     },
     {
         title: "Portfolio v1",
@@ -130,7 +130,7 @@ export const projects: Project[] = [
         role: "Developer",
         link: "https://vrdevil44.github.io/portfolio/",
         metrics: ["Metric 1", "Metric 2"],
-        image: "/images/projects/portfolio-v1.png",
+        image: "/images/portfolio-v1.png",
     },
     {
         title: "MusicPad",
@@ -142,7 +142,7 @@ export const projects: Project[] = [
         role: "Developer",
         link: "https://vrdevil44.github.io/MusicPad/",
         metrics: ["Metric 1", "Metric 2"],
-        image: "/images/projects/musicpad.png",
+        image: "/images/musicpad.png",
     },
     {
         title: "BUS 306",
@@ -154,7 +154,7 @@ export const projects: Project[] = [
         role: "Developer",
         link: "https://vrdevil44.github.io/BUS-306/",
         metrics: ["Metric 1", "Metric 2"],
-        image: "/images/projects/bus-306.png",
+        image: "/images/bus-306.png",
     },
     {
         title: "Puzzles",
@@ -166,7 +166,7 @@ export const projects: Project[] = [
         role: "Developer",
         link: "https://vrdevil44.github.io/Puzzles/",
         metrics: ["Metric 1", "Metric 2"],
-        image: "/images/projects/puzzles.png",
+        image: "/images/puzzles.png",
     },
     {
         title: "Group Project",
@@ -178,7 +178,7 @@ export const projects: Project[] = [
         role: "Developer",
         link: "https://vrdevil44.github.io/Group-Project/",
         metrics: ["Metric 1", "Metric 2"],
-        image: "/images/projects/group-project.png",
+        image: "/images/group-project.png",
     },
     {
         title: "Calendar",
@@ -190,7 +190,7 @@ export const projects: Project[] = [
         role: "Developer",
         link: "https://vrdevil44.github.io/calendar/",
         metrics: ["Metric 1", "Metric 2"],
-        image: "/images/projects/calendar.png",
+        image: "/images/calendar.png",
     },
 
 ];
