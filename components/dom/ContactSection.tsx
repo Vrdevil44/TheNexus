@@ -148,7 +148,7 @@ export default function ContactSection() {
 
                             <div className="mt-8 pt-8 border-t border-white/10 flex flex-row gap-3">
                                 <a
-                                    href={`${process.env.NODE_ENV === 'production' ? '/portfolio' : ''}/resume.pdf`}
+                                    href={`${process.env.NODE_ENV === 'production' ? '/TheNexus' : ''}/Vibhu-Dikshit-Resume.pdf`}
                                     download="Vibhu_Dikshit_Resume.pdf"
                                     target="_blank"
                                     rel="noopener noreferrer"
@@ -158,7 +158,7 @@ export default function ContactSection() {
                                     Resume
                                 </a>
                                 <a
-                                    href={`${process.env.NODE_ENV === 'production' ? '/portfolio' : ''}/cv.pdf`}
+                                    href={`${process.env.NODE_ENV === 'production' ? '/TheNexus' : ''}/Vibhu%20Dikshit-CV.pdf`}
                                     download="Vibhu_Dikshit_CV.pdf"
                                     target="_blank"
                                     rel="noopener noreferrer"
