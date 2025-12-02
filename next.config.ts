@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const isProd = process.env.NODE_ENV === 'production' || process.env.GITHUB_ACTIONS === 'true';
+const isProd = process.env.NODE_ENV === 'production' || process.env.GITHUB_ACTIONS === 'true' || process.env.CI === 'true';
 const repoName = 'TheNexus';
 
 const nextConfig = {
